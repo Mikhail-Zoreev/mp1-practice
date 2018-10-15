@@ -79,7 +79,7 @@ void main() {
 			printf("Коров %d\nБыков %d\n", cow, bull);
 		}
 		else {
-			printf("Поздравляю, вы угдадли число!\n");
+			printf("\nПоздравляю, вы угадали число!\n");
 		}
 
 	} while (bull < n);
