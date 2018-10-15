@@ -6,8 +6,8 @@
 void main() {
 	setlocale(LC_ALL, "Russian");
 	srand((unsigned int) time(0));
-	int mode, input=0, answer=-1, i=0;
-	char output = '>';
+	int mode, input, answer, i=0, delta;
+	char out,bug1;
 
 	while (1) {
 		printf("Выберите режим игры 1 или 2\n");
@@ -18,54 +18,82 @@ void main() {
 
 	//Режим 1
 
-	input = rand() % 1000 + 1;
-	printf("%d",input);
+	if (mode == 1) {
+		
+		input = rand() % 1000 + 1;
 
-	while ((mode == 1) && (answer != input)) {
-		
-		while (1) {
-			printf("Введите число ");
-			scanf("%d", &answer);
-			if ((answer > 0) && (answer < 1001)) break;
-			printf("Ошибка. ");
-		}
-		
-		i++;
-		
-		if (answer < input)
-			printf("Меньше\n\n");
-		else if (answer > input)
-			printf("Больше\n\n");
-		else {
-			printf("Вы угадали за %d попыток", i);
-			return;
+		while (answer != input) {
+
+			i++;
+			
+			while (1) {
+				printf("Введите число ");
+				scanf("%d", &answer);
+				if ((answer > 0) && (answer < 1001)) break;
+				printf("Ошибка. ");
+			}
+
+			if (answer < input)
+				printf("Введённое меньше\n\n");
+			if (answer > input)
+				printf("Введённое больше\n\n");
+			if (answer == input) {
+				printf("Вы угадали за %d попыток", i);
+				return;
+			}
 		}
 	}
-
+	
+	
 	//Режим 2
 
-	answer = 500;
-	
-	while (1) {
-		printf("Введите загаданное число ");
-		scanf("%d",&input);
-		if ((input > 0) && (input < 1001)) break;
-		printf("Ошибка. ");
-	}
-	
-	while (1) {
+	if (mode == 2) {
 
-		i++;
+		answer = 512;
+		delta = 256;
 
-		printf("Это число %d?\n", answer);
-		scanf("%c",&output);
-		if (output == '<')
-			answer = answer + answer / 2;
-		else if (output == '>')
-			answer = answer - answer / 2;
-		else {
-			printf("Компьютер угадал за %d попыток",i);
+		while (1) {
+			printf("Введите загаданное число ");
+			scanf("%d", &input);
+			if ((input > 0) && (input < 1001)) break;
+			printf("Ошибка. ");
 		}
+
+		while (1) {
+
+			i++;
+
+			if (answer > 1001) {
+				answer = answer - delta;
+				delta = delta / 2;
+				i--;
+			}
+			else {
+				printf("Это число %d?\n", answer);
+				
+				while (1) {
+					scanf("%c%c", &bug1,&out);
+					if ((out=='>')||(out=='<')||(out=='=')) break;
+				}
+
+
+				if (out == '<') {
+					answer = answer + delta;
+					delta = delta / 2;
+				}
+				if (out == '>') {
+					answer = answer - delta;
+					delta = delta / 2;
+				}
+				if (out == '=') {
+					printf("Компьютер угадал за %d попыток\n", i);
+					return;
+				}
+
+			}
+
+		}
+
 	}
 
 }
