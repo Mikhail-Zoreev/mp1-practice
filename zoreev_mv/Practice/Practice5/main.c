@@ -1,11 +1,11 @@
-#include <stdio.h>
+п»ї#include <stdio.h>
 #include <locale.h>
 #define N 10
 #define K 5
 
 int min = 0, max = 0;
 
-//Сортировки
+//РЎРѕСЂС‚РёСЂРѕРІРєРё
 
 void choose_sort(int a[], int n) {
     int i, j, min, minindx;
@@ -77,7 +77,7 @@ void counting_sort(int a[], int n) {
     }
 }
 
-// Ввод-вывод
+// Р’РІРѕРґ-РІС‹РІРѕРґ
 
 void input(int a[], int n) {
     int i;
@@ -99,7 +99,7 @@ void main() {
     
     input(a, N);
     
-    printf("Выберите алгоритм сортировки ");
+    printf("Р’С‹Р±РµСЂРёС‚Рµ Р°Р»РіРѕСЂРёС‚Рј СЃРѕСЂС‚РёСЂРѕРІРєРё ");
 
     do {
         scanf("%d", &mode);
