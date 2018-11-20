@@ -7,7 +7,7 @@
 int number = 0;
 int discont[N], price[N];
 int added_code[N] = { 0 }, count[N] = { 0 };
-int translated_code[4];
+int tcode[4];
 double sum = 0, final_discont = 0;
 
 //Служебные функции
@@ -26,7 +26,7 @@ void code_translation(int code) {
     int i, temp = code;
 
     for (i = 3; i >= 0; i--) {
-        translated_code[i] = temp % 10;
+        tcode[i] = temp % 10;
         temp /= 10;
     }
 }
@@ -35,61 +35,62 @@ void name_printer(kind,country,color,type) {
     setlocale(LC_ALL, "Russian");
 
     switch (color) {
-    case 0: printf("Красный "); break;
-    case 1: printf("Оранжевый "); break;
-    case 2: printf("Жёлтый "); break;
-    case 3: printf("Зелёный "); break;
-    case 4: printf("Синий "); break;
-    case 5: printf("Голубой "); break;
-    case 6: printf("Фиолетовый "); break;
-    case 7: printf("Чёрный "); break;
-    case 8: printf("Розовый "); break;
-    case 9: printf("Коричневый "); break;
+    case 0: printf("Красный\n"); break;
+    case 1: printf("Оранжевый\n"); break;
+    case 2: printf("Жёлтый\n"); break;
+    case 3: printf("Зелёный\n"); break;
+    case 4: printf("Синий\n"); break;
+    case 5: printf("Голубой\n"); break;
+    case 6: printf("Фиолетовый\n"); break;
+    case 7: printf("Чёрный\n"); break;
+    case 8: printf("Розовый\n"); break;
+    case 9: printf("Коричневый\n"); break;
     }
     switch (country) {
-    case 0: printf("Российский "); break;
-    case 1: printf("Немецкий "); break;
-    case 2: printf("Итальянский "); break;
-    case 3: printf("Американский "); break;
-    case 4: printf("Японский "); break;
-    case 5: printf("Китайский "); break;
-    case 6: printf("Индийский "); break;
-    case 7: printf("Бразильский "); break;
-    case 8: printf("Польский "); break;
-    case 9: printf("Вьетнамский "); break;
+    case 0: printf("Российский\n"); break;
+    case 1: printf("Немецкий\n"); break;
+    case 2: printf("Итальянский\n"); break;
+    case 3: printf("Американский\n"); break;
+    case 4: printf("Японский\n"); break;
+    case 5: printf("Китайский\n"); break;
+    case 6: printf("Индийский\n"); break;
+    case 7: printf("Бразильский\n"); break;
+    case 8: printf("Польский\n"); break;
+    case 9: printf("Вьетнамский\n"); break;
     }
     switch (kind) {
-    case 0: printf("стол "); break;
-    case 1: printf("стул "); break;
-    case 2: printf("стул "); break;
-    case 3: printf("шкаф "); break;
-    case 4: printf("шкаф "); break;
-    case 5: printf("диван "); break;
-    case 6: printf("диван "); break;
-    case 7: printf("ящик "); break;
-    case 8: printf("ящик "); break;
-    case 9: printf("стол "); break;
+    case 0: printf("стол\n"); break;
+    case 1: printf("стул\n"); break;
+    case 2: printf("стул\n"); break;
+    case 3: printf("шкаф\n"); break;
+    case 4: printf("шкаф\n"); break;
+    case 5: printf("диван\n"); break;
+    case 6: printf("диван\n"); break;
+    case 7: printf("ящик\n"); break;
+    case 8: printf("ящик\n"); break;
+    case 9: printf("стол\n"); break;
     }
     switch (kind) {
-    case 0: printf(" из берёзы "); break;
-    case 1: printf("из берёзы "); break;
-    case 2: printf("из осины "); break;
-    case 3: printf("из осины "); break;
-    case 4: printf("из липы "); break;
-    case 5: printf("из липы "); break;
-    case 6: printf("из ясеня "); break;
-    case 7: printf("из ясеня "); break;
-    case 8: printf("из ели"); break;
-    case 9: printf("из ели "); break;
+    case 0: printf("из берёзы   "); break;
+    case 1: printf("из берёзы   "); break;
+    case 2: printf("из осины    "); break;
+    case 3: printf("из осины    "); break;
+    case 4: printf("из липы     "); break;
+    case 5: printf("из липы     "); break;
+    case 6: printf("из ясеня    "); break;
+    case 7: printf("из ясеня    "); break;
+    case 8: printf("из ели      "); break;
+    case 9: printf("из ели      "); break;
     }
 }
 
 //Оперативные функции
 
 void information(int code) {
-    printf("\n***\n Информация о товаре\n");
-    printf("Номер:  %d\n", code, price[code], discont[code]);
-    printf("Цена:   %d р\nСкидка: %d\n***\n", price[code], discont[code]);
+    printf("***\n Информация о товаре :\n");
+    name_printer(tcode[0], tcode[1], tcode[2], tcode[3]);
+    printf("\n\nКод:    %d%d%d%d\n", tcode[0], tcode[1], tcode[2], tcode[3]);
+    printf("Цена:   %d\nСкидка: %d\n***\n\n", price[code], discont[code]);
 }
 
 void adding(int code) {
@@ -110,12 +111,16 @@ void adding(int code) {
 
 void printing() {
     int i;
-    printf("\nМебельный магазин\n");
+    system("cls");
+    printf("Мебельный магазин Золушка\n");
+    printf("Кассир: Пупкин В.Г.\n");
+    printf("\nТовар         Код   цена  количество  сумма\n\n");
 
     for (i = 0; i < number; i++) {
         code_translation(added_code[i]);
-        name_printer(translated_code[0], translated_code[1], translated_code[2], translated_code[3]);
-        printf("%d   %d\n", added_code[i], count[i]);
+        name_printer(tcode[0], tcode[1], tcode[2], tcode[3]);
+        printf("  %d%d%d%d  ", tcode[0], tcode[1], tcode[2], tcode[3]);
+        printf("%4d  %10d  %5d\n\n", price[added_code[i]], count[i], price[added_code[i]]* count[i]);
     }
 
     printf("\nИтог     %lf\n", sum);
@@ -136,11 +141,13 @@ void main() {
             scanf("%d", &code);
         } while ((code < 1) || (code > 9999));
 
+        system("cls");
+
         input = 0;
 
         while (input != 3) {
 
-            printf("\nЧтобы вывести описание товара нажмите 1\n");
+            printf("Чтобы вывести описание товара нажмите 1\n");
             printf("Чтобы добавить товар в чек нажмите 2\n");
             printf("Чтобы сканировать следующий товар нажмите 3\n");
             printf("Чтобы напечатать чек нажмите 4\n");
@@ -149,9 +156,19 @@ void main() {
                 scanf("%d", &input);
             } while ((input < 1) || (input>4));
 
-            if (input == 1) information(code);
-            if (input == 2) adding(code);
-            if (input == 4) { printing(code); break; }
+            if (input == 1) {
+                system("cls");
+                code_translation(code);
+                information(code);
+            }
+            if (input == 2)  {
+                adding(code);
+                system("cls");
+            }
+            if (input == 4) {
+                printing(code);
+                break;
+            }
 
         }
 
