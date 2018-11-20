@@ -62,7 +62,7 @@ void bubble_sort(int a[], int n) {
 }*/
 
 void counting_sort(int a[], int n) {
-    int count[K] = { 0 }, i, j, min = a[0], max = a[0], index = 0;
+    int count[N] = { 0 }, i, j, min = a[0], max = a[0], index = 0;
     for (i = 0; i < n; i++) {
         if (a[i] > max) max = a[i];
         if (a[i] < min) min = a[i];
@@ -70,7 +70,7 @@ void counting_sort(int a[], int n) {
     for (i = 0; i < n; i++) {
         count[(a[i] - min)]++;
     }
-    for (i = 0; i < (max - min); i++) {
+    for (i = 0; i <= (max - min); i++) {
         for (j = 0; j < count[i]; j++) {
             a[index++] = i + min;
         }
