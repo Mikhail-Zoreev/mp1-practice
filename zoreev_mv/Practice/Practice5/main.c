@@ -9,6 +9,7 @@ void insert_sort(int *a, int n);
 void bubble_sort(int *a, int n);
 void counting_sort(int *a, int n);
 void quick_sort(int *a, int first, int last);
+void merge_sort(int *a, int left, int right);
 void input(int *a, int n);
 void output(int *a, int n);
 
@@ -30,6 +31,7 @@ void main() {
     if (mode == 3) bubble_sort(a, N);
     if (mode == 4) counting_sort(a, N);
     if (mode == 5) quick_sort(a, 0, N - 1);
+    if (mode == 6) merge_sort(a, 0, N - 1);
 
     output(a, N);
 }
@@ -119,6 +121,37 @@ void quick_sort(int *a, int first, int last) {
         quick_sort(a, left, last);
     }
 }
+
+void merge_sort(int *a, int left, int right) {
+    int i = 0, j = 0, k = 0, length = (right - left + 1), middle;
+    int *temp;
+    if (left >= right) return;
+    middle = (left + right) / 2;
+    merge_sort(a, left, middle);
+    merge_sort(a, middle + 1, right);
+    temp = (int*)malloc(length * sizeof(int));
+    i = left;
+    j = middle + 1;
+    while ((i <= middle) && (j <= right)) {
+        if (a[i] < a[j]) {
+            temp[k++] = a[i++];
+        }
+        else {
+            temp[k++] = a[j++];
+        }
+    }
+    while (i <= middle) {
+            temp[k++] = a[i++];
+    }
+    while (j <= right) {
+        temp[k++] = a[j++];
+    }
+    for (i = left; i <= right; i++) {
+        a[i] = temp[i - left];
+    }
+    free(temp);
+}
+
 // Ввод-вывод
 
 void input(int *a, int n) {
