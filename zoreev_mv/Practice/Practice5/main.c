@@ -11,7 +11,7 @@ void insert_sort(LONGLONG *size, int *index, int n);
 void bubble_sort(LONGLONG *size, int *index, int n);
 void counting_sort(int *a, int n);
 void quick_sort(LONGLONG *a, int *size, int first, int last);
-void merge_sort(int *a, int left, int right);
+void merge_sort(LONGLONG *size, int *index, int left, int right);
 int file_counter(const wchar_t *sDir);
 int file_reader(const wchar_t *sDir, LONGLONG *size);
 void output(int *a, int n);
@@ -46,7 +46,7 @@ void main() {
     if (mode == 3) bubble_sort(size, index, n);
     if (mode == 4) counting_sort(size, n);
     if (mode == 5) quick_sort(size, index, 0, n - 1);
-    if (mode == 6) merge_sort(size, 0, n - 1);
+    if (mode == 6) merge_sort(size, index, 0, n - 1);
 
     output(index, n);
 }
@@ -120,51 +120,51 @@ void counting_sort(int *a, int n) {
     free(count);
 }
 
-void quick_sort(LONGLONG *a, int *size, int first, int last) {
-    int left = first, right = last, middle = a[(left + right) / 2];
+void quick_sort(LONGLONG *size, int *index, int first, int last) {
+    int left = first, right = last, middle = size[index[(left + right) / 2]];
     if (first < last) {
         do {
-            while (a[left] < middle) left++;
-            while (a[right] > middle) right--;
+            while (size[index[left]] < middle) left++;
+            while (size[index[right]] > middle) right--;
             if (left <= right) {
-                int temp = a[left];
-                a[left] = a[right];
-                a[right] = temp;
+                int temp = index[left];
+                index[left] = index[right];
+                index[right] = temp;
                 left++;
                 right--;
             } 
         } while (left <= right);
-        quick_sort(a, first, right);
-        quick_sort(a, left, last);
+        quick_sort(size, index, first, right);
+        quick_sort(size, index, left, last);
     }
 }
 
-void merge_sort(int *a, int left, int right) {
+void merge_sort(LONGLONG *size,int *index, int left, int right) {
     int i = 0, j = 0, k = 0, length = (right - left + 1), middle;
     int *temp;
     if (left >= right) return;
     middle = (left + right) / 2;
-    merge_sort(a, left, middle);
-    merge_sort(a, middle + 1, right);
+    merge_sort(size, index, left, middle);
+    merge_sort(size, index, middle + 1, right);
     temp = (int*)malloc(length * sizeof(int));
     i = left;
     j = middle + 1;
     while ((i <= middle) && (j <= right)) {
-        if (a[i] < a[j]) {
-            temp[k++] = a[i++];
+        if (size[index[i]] < size[index[j]]) {
+            temp[k++] = index[i++];
         }
         else {
-            temp[k++] = a[j++];
+            temp[k++] = index[j++];
         }
     }
     while (i <= middle) {
-            temp[k++] = a[i++];
+            temp[k++] = index[i++];
     }
     while (j <= right) {
-        temp[k++] = a[j++];
+        temp[k++] = index[j++];
     }
     for (i = left; i <= right; i++) {
-        a[i] = temp[i - left];
+        index[i] = temp[i - left];
     }
     free(temp);
 }
