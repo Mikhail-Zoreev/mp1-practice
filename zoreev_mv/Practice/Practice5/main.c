@@ -1,80 +1,97 @@
 ﻿#include <stdio.h>
 #include <locale.h>
+#include <stdlib.h>
+#include <windows.h>
 #define N 10
 
 //Прототипы функций
 
-void choose_sort(int *a, int n);
-void insert_sort(int *a, int n);
-void bubble_sort(int *a, int n);
+void choose_sort(LONGLONG *size, int *index, int n);
+void insert_sort(LONGLONG *size, int *index, int n);
+void bubble_sort(LONGLONG *size, int *index, int n);
 void counting_sort(int *a, int n);
-void quick_sort(int *a, int first, int last);
+void quick_sort(LONGLONG *a, int *size, int first, int last);
 void merge_sort(int *a, int left, int right);
-void input(int *a, int n);
+int file_counter(const wchar_t *sDir);
+int file_reader(const wchar_t *sDir, LONGLONG *size);
 void output(int *a, int n);
 
-
 void main() {
-    int a[N], mode;
+    int mode = 0, n = 0, i;
+	int *index;
+	LONGLONG *size;
+
     setlocale(LC_ALL, "Russian");
-    
-    input(a, N);
-    
+
+	do {
+		n = file_counter(L"c:\\Program Files\\Application Verifier\\");
+	} while (n < 1);
+
+	size = (LONGLONG*)malloc(n * sizeof(LONGLONG));
+	index = (int*)malloc(n * sizeof(int));
+	for (i = 0; i < n; i++) {
+		index[i] = i;
+	}
+	
+	file_reader(L"c:\\Program Files\\Application Verifier\\", size);
+
     printf("Выберите алгоритм сортировки ");
 
     do {
         scanf("%d", &mode);
     } while ((mode < 1) || (mode > 6));
 
-    if (mode == 1) choose_sort(a, N);
-    if (mode == 2) insert_sort(a, N);
-    if (mode == 3) bubble_sort(a, N);
-    if (mode == 4) counting_sort(a, N);
-    if (mode == 5) quick_sort(a, 0, N - 1);
-    if (mode == 6) merge_sort(a, 0, N - 1);
+    if (mode == 1) choose_sort(size, index, n);
+    if (mode == 2) insert_sort(size, index, n);
+    if (mode == 3) bubble_sort(size, index, n);
+    if (mode == 4) counting_sort(size, n);
+    if (mode == 5) quick_sort(size, index, 0, n - 1);
+    if (mode == 6) merge_sort(size, 0, n - 1);
 
-    output(a, N);
+    output(index, n);
 }
 
 //Сортировки
 
-void choose_sort(int *a, int n) {
-    int i, j, min, minindx;
-    for (i = 0; i < n; i++) {
-        min = a[i];
-        minindx = i;
-        for (j = i + 1; j < n; j++) {
-            if (a[j] < min) {
-                min = a[j];
-                minindx = j;
-            }
-        }
-        a[minindx] = a[i];
-        a[i] = min;
-    }
+void choose_sort(LONGLONG *size, int *index, int n) {
+	int i, j, min, minindx, temp;
+	for (i = 0; i < n; i++) {
+		min = size[index[i]];
+		minindx = i;
+		for (j = i + 1; j < n; j++) {
+			if (size[index[j]] < min) {
+				min = size[index[j]];
+				minindx = j;
+			}
+		}
+		temp = index[minindx];
+		index[minindx] = index[i];
+		index[i] = temp;
+	}
 }
 
-void insert_sort(int *a, int n) {
-    int i, j, temp;
+void insert_sort(LONGLONG *size, int *index, int n) {
+    int i, j, temp, swap;
     for (i = 1; i < n; i++) {
-        temp = a[i];
+        temp = size[index[i]];
+		swap = index[i];
         j = i - 1;
-            while ((j >= 0) && (a[j] > temp)) {
-                a[j + 1] = a[j];
-                a[j] = temp;
+            while ((j >= 0) && (size[index[j]] > temp)) {
+                index[j + 1] = index[j];
+                index[j] = swap;
                 j--;
             }
     }
 }
 
-void bubble_sort(int *a, int n) {
+void bubble_sort(LONGLONG *size, int *index, int n) {
     int i, j, temp;
     for (i = 0; i < n; i++) {
         for (j = 1; j < n - i; j++) {
-            if (a[j - 1] > a[j]) {
-                temp = a[j];
-                a[j] = a[j - 1];
-                a[j - 1] = temp;
+            if (size[index[j - 1]] > size[index[j]]) {
+                temp = index[j];
+                index[j] = index[j - 1];
+                index[j - 1] = temp;
             }
         }
     }
@@ -103,7 +120,7 @@ void counting_sort(int *a, int n) {
     free(count);
 }
 
-void quick_sort(int *a, int first, int last) {
+void quick_sort(LONGLONG *a, int *size, int first, int last) {
     int left = first, right = last, middle = a[(left + right) / 2];
     if (first < last) {
         do {
@@ -154,11 +171,61 @@ void merge_sort(int *a, int left, int right) {
 
 // Ввод-вывод
 
-void input(int *a, int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        scanf("%d", &a[i]);
-    }
+int file_counter(const wchar_t *sDir)
+{
+	int n = 0;
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	wchar_t sPath[2048];
+
+	wsprintf(sPath, L"%s\\*.*", sDir);
+	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+	{
+		wprintf(L"Path not found: [%s]\n", sDir);
+		return -1;
+	}
+
+	do
+	{
+		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+		{
+			n++;
+		}
+	} while (FindNextFile(hFind, &fdFile));
+	FindClose(hFind);
+	return n;
+}
+
+int file_reader(const wchar_t *sDir, LONGLONG *size)
+{
+	int i = 0;
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	wchar_t sPath[2048];
+
+	wsprintf(sPath, L"%s\\*.*", sDir);
+	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+	{
+		wprintf(L"Path not found: [%s]\n", sDir);
+		return 1;
+	}
+
+	do
+	{
+		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+		{
+			ULONGLONG fileSize = fdFile.nFileSizeHigh;
+			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+			fileSize |= fdFile.nFileSizeLow;
+
+			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+			wprintf(L"File: %s Size: %d\n", sPath, fileSize);
+
+			size[i++] = fileSize;
+		}
+	} while (FindNextFile(hFind, &fdFile));
+	FindClose(hFind);
+	return 0;
 }
 
 void output(int *a, int n) {
