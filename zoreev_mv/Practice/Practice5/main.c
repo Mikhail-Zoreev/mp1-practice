@@ -9,31 +9,39 @@
 void choose_sort(LONGLONG *size, int *index, int n);
 void insert_sort(LONGLONG *size, int *index, int n);
 void bubble_sort(LONGLONG *size, int *index, int n);
-void counting_sort(int *a, int n);
-void quick_sort(LONGLONG *a, int *size, int first, int last);
+void counting_sort(LONGLONG *size, int *index, int n);
+void quick_sort(LONGLONG *size, int *index, int first, int last);
 void merge_sort(LONGLONG *size, int *index, int left, int right);
 int file_counter(const wchar_t *sDir);
-int file_reader(const wchar_t *sDir, LONGLONG *size);
+int file_reader(const wchar_t *sDir, LONGLONG *size, char **name);
 void output(int *a, int n);
+void printer(LONGLONG *size, wchar_t **name, int *index, int n);
 
 void main() {
     int mode = 0, n = 0, i;
 	int *index;
 	LONGLONG *size;
+    char *s_path;
+    wchar_t  *path;
+    wchar_t  **name;
 
     setlocale(LC_ALL, "Russian");
 
 	do {
 		n = file_counter(L"c:\\Program Files\\Application Verifier\\");
+        if (n == 0) printf("Директория пуста\n");
 	} while (n < 1);
 
 	size = (LONGLONG*)malloc(n * sizeof(LONGLONG));
 	index = (int*)malloc(n * sizeof(int));
+    name = (wchar_t**)malloc(n * sizeof(wchar_t*));
 	for (i = 0; i < n; i++) {
 		index[i] = i;
+        name[i] = (wchar_t*)malloc(64 * sizeof(char));
+        memset(name[i],0,64);
 	}
 	
-	file_reader(L"c:\\Program Files\\Application Verifier\\", size);
+	file_reader(L"c:\\Program Files\\Application Verifier\\", size, name);
 
     printf("Выберите алгоритм сортировки ");
 
@@ -44,11 +52,12 @@ void main() {
     if (mode == 1) choose_sort(size, index, n);
     if (mode == 2) insert_sort(size, index, n);
     if (mode == 3) bubble_sort(size, index, n);
-    if (mode == 4) counting_sort(size, n);
+    if (mode == 4) counting_sort(size, index, n);
     if (mode == 5) quick_sort(size, index, 0, n - 1);
     if (mode == 6) merge_sort(size, index, 0, n - 1);
 
     output(index, n);
+    printer(size, name, index, n);
 }
 
 //Сортировки
@@ -97,24 +106,29 @@ void bubble_sort(LONGLONG *size, int *index, int n) {
     }
 }
 
-void counting_sort(int *a, int n) {
+void counting_sort(LONGLONG *size,int *index, int n) {
     int *count;
-    int i, j, d, min = a[0], max = a[0], index = 0;
+    int i, j, d, min = size[index[0]], max = size[index[0]], k = 0, s = 0;
     for (i = 1; i < n; i++) {
-        if (a[i] > max) max = a[i];
-        if (a[i] < min) min = a[i];
+        if (size[i] > max) max = size[i];
+        if (size[i] < min) min = size[i];
     }
     d = (max - min) + 1;
-    count = (int*)malloc(d * sizeof(int));
+    count = (LONGLONG*)malloc(d * sizeof(LONGLONG));
     for (i = 0; i < d; i++) {
         count[i] = 0;
     }
     for (i = 0; i < n; i++) {
-        count[(a[i] - min)]++;
+        count[(size[i] - min)]++;
     }
     for (i = 0; i < d; i++) {
+        k = 0;
         for (j = 0; j < count[i]; j++) {
-            a[index++] = i + min;
+            while (size[k] != i + min) {
+                k++;
+            }
+            index[s++] = k;
+            k++;
         }
     }
     free(count);
@@ -196,7 +210,7 @@ int file_counter(const wchar_t *sDir)
 	return n;
 }
 
-int file_reader(const wchar_t *sDir, LONGLONG *size)
+int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 {
 	int i = 0;
 	WIN32_FIND_DATA fdFile;
@@ -220,7 +234,7 @@ int file_reader(const wchar_t *sDir, LONGLONG *size)
 
 			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
 			wprintf(L"File: %s Size: %d\n", sPath, fileSize);
-
+            wsprintf(name[i],L"%s", fdFile.cFileName);
 			size[i++] = fileSize;
 		}
 	} while (FindNextFile(hFind, &fdFile));
@@ -236,3 +250,9 @@ void output(int *a, int n) {
     printf("\n");
 }
 
+void printer(LONGLONG *size, wchar_t **name, int *index, int n) {
+    int i = 0;
+    for (i = 0; i < n; i++) {
+        wprintf(L"File: %s Size: %d\n", name[index[i]], size[index[i]]);
+    }
+}
