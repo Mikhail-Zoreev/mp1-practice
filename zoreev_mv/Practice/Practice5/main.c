@@ -14,8 +14,7 @@ void quick_sort(LONGLONG *size, int *index, int first, int last);
 void merge_sort(LONGLONG *size, int *index, int left, int right);
 int file_counter(const wchar_t *sDir);
 int file_reader(const wchar_t *sDir, LONGLONG *size, char **name);
-void output(int *a, int n);
-void printer(LONGLONG *size, wchar_t **name, int *index, int n);
+void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode);
 
 void main() {
     int mode = 0, n = 0, i;
@@ -43,21 +42,50 @@ void main() {
 	
 	file_reader(L"c:\\Program Files\\Application Verifier\\", size, name);
 
-    printf("Выберите алгоритм сортировки ");
-
     do {
-        scanf("%d", &mode);
-    } while ((mode < 1) || (mode > 6));
+        
+        printf("Для выбора соритровки введите цифру:\n");
+        printf("Сортировка выбором   1\n");
+        printf("Сортировка вставками 2\n");
+        printf("Сортировка пузырьком 3\n");
+        printf("Сортировка подсчётом 4\n");
+        printf("Быстрая сортировка   5\n");
+        printf("Сортировка слиянием  6\n");
 
-    if (mode == 1) choose_sort(size, index, n);
-    if (mode == 2) insert_sort(size, index, n);
-    if (mode == 3) bubble_sort(size, index, n);
-    if (mode == 4) counting_sort(size, index, n);
-    if (mode == 5) quick_sort(size, index, 0, n - 1);
-    if (mode == 6) merge_sort(size, index, 0, n - 1);
+        do {
+            scanf("%d", &mode);
+        } while ((mode < 1) || (mode > 6));
 
-    output(index, n);
-    printer(size, name, index, n);
+        system("cls");
+
+        if (mode == 1) choose_sort(size, index, n);
+        if (mode == 2) insert_sort(size, index, n);
+        if (mode == 3) bubble_sort(size, index, n);
+        if (mode == 4) counting_sort(size, index, n);
+        if (mode == 5) quick_sort(size, index, 0, n - 1);
+        if (mode == 6) merge_sort(size, index, 0, n - 1);
+
+        printf("Чтобы сортировать по возрастанию введите 1\n");
+        printf("Чтобы сортированть по убыванию введите   2\n"); 
+
+        do {
+            scanf("%d", &mode);
+        } while ((mode != 1) && (mode != 2));
+
+        system("cls");
+
+        printer(size, name, index, n, mode);
+
+        printf("Чтобы выбрать другую соритровку введите 1\n");
+        printf("Чтобы выйти из программы введите        2\n");
+
+        do {
+            scanf("%d", &mode);
+        } while ((mode != 1) && (mode != 2));
+
+        system("cls");
+         
+    } while (mode != 2);
 }
 
 //Сортировки
@@ -233,8 +261,7 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 			fileSize |= fdFile.nFileSizeLow;
 
 			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-			wprintf(L"File: %s Size: %d\n", sPath, fileSize);
-            wsprintf(name[i],L"%s", fdFile.cFileName);
+            wsprintf(name[i], L"%s\\%s", sDir, fdFile.cFileName);
 			size[i++] = fileSize;
 		}
 	} while (FindNextFile(hFind, &fdFile));
@@ -242,17 +269,16 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 	return 0;
 }
 
-void output(int *a, int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-}
-
-void printer(LONGLONG *size, wchar_t **name, int *index, int n) {
+void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode) {
     int i = 0;
-    for (i = 0; i < n; i++) {
-        wprintf(L"File: %s Size: %d\n", name[index[i]], size[index[i]]);
+    if (mode == 1) {
+        for (i = 0; i < n; i++) {
+            wprintf(L"%s Size: %d\n", name[index[i]], size[index[i]]);
+        }
+    }
+    else {
+        for (i = n-1; i >= 0; i--) {
+            wprintf(L"%s Size: %d\n", name[index[i]], size[index[i]]);
+        }
     }
 }
