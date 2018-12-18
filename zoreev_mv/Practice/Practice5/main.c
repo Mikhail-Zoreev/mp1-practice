@@ -2,7 +2,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <windows.h>
-#define N 10
+#define PATH_BUFFER 2048
 
 //Прототипы функций
 
@@ -20,15 +20,20 @@ void main() {
     int mode = 0, n = 0, i;
 	int *index;
 	LONGLONG *size;
-    char *s_path;
-    wchar_t  *path;
+    char *s_path = (char*)malloc(PATH_BUFFER*sizeof(char));
+    wchar_t  *path = (wchar_t*)malloc((PATH_BUFFER)*sizeof(wchar_t));
     wchar_t  **name;
 
     setlocale(LC_ALL, "Russian");
 
+    printf("Введите директорию\n");
+
 	do {
-		n = file_counter(L"c:\\Program Files\\Application Verifier\\");
-        if (n == 0) printf("Директория пуста\n");
+        fgets(s_path, PATH_BUFFER, stdin);
+        s_path[strlen(s_path) - 1] = '\0';
+        swprintf(path, PATH_BUFFER, L"%hs", s_path);
+		n = file_counter(path);
+        if (n == 0) printf("Path is empty\n");
 	} while (n < 1);
 
 	size = (LONGLONG*)malloc(n * sizeof(LONGLONG));
@@ -36,21 +41,20 @@ void main() {
     name = (wchar_t**)malloc(n * sizeof(wchar_t*));
 	for (i = 0; i < n; i++) {
 		index[i] = i;
-        name[i] = (wchar_t*)malloc(64 * sizeof(char));
-        memset(name[i],0,64);
+        name[i] = (wchar_t*)malloc(256 * sizeof(char));
+        memset(name[i],0,256);
 	}
 	
-	file_reader(L"c:\\Program Files\\Application Verifier\\", size, name);
+	file_reader(path, size, name);
 
     do {
-        
         printf("Для выбора соритровки введите цифру:\n");
-        printf("Сортировка выбором   1\n");
-        printf("Сортировка вставками 2\n");
-        printf("Сортировка пузырьком 3\n");
-        printf("Сортировка подсчётом 4\n");
-        printf("Быстрая сортировка   5\n");
-        printf("Сортировка слиянием  6\n");
+        printf("Сортировка выбором      1\n");
+        printf("Сортировка вставками    2\n");
+        printf("Сортировка пузырьком    3\n");
+        printf("Сортировка подсчётом    4\n");
+        printf("Быстрая сортировка      5\n");
+        printf("Сортировка слиянием     6\n");
 
         do {
             scanf("%d", &mode);
@@ -65,8 +69,8 @@ void main() {
         if (mode == 5) quick_sort(size, index, 0, n - 1);
         if (mode == 6) merge_sort(size, index, 0, n - 1);
 
-        printf("Чтобы сортировать по возрастанию введите 1\n");
-        printf("Чтобы сортированть по убыванию введите   2\n"); 
+        printf("Чтобы сортировать по возрастанию введите    1\n");
+        printf("Чтобы сортированть по убыванию введите      2\n"); 
 
         do {
             scanf("%d", &mode);
@@ -76,8 +80,8 @@ void main() {
 
         printer(size, name, index, n, mode);
 
-        printf("Чтобы выбрать другую соритровку введите 1\n");
-        printf("Чтобы выйти из программы введите        2\n");
+        printf("\nЧтобы выбрать другую соритровку введите    1\n");
+        printf("Чтобы выйти из программы введите           2\n");
 
         do {
             scanf("%d", &mode);
@@ -86,12 +90,19 @@ void main() {
         system("cls");
          
     } while (mode != 2);
+
+    free(index);
+    free(size);
+    free(s_path);
+    free(*name);
+    free(name);
 }
 
 //Сортировки
 
 void choose_sort(LONGLONG *size, int *index, int n) {
-	int i, j, min, minindx, temp;
+	int i, j, minindx;
+    LONGLONG min, temp;
 	for (i = 0; i < n; i++) {
 		min = size[index[i]];
 		minindx = i;
@@ -108,7 +119,8 @@ void choose_sort(LONGLONG *size, int *index, int n) {
 }
 
 void insert_sort(LONGLONG *size, int *index, int n) {
-    int i, j, temp, swap;
+    int i, j, swap;
+    LONGLONG temp;
     for (i = 1; i < n; i++) {
         temp = size[index[i]];
 		swap = index[i];
@@ -134,15 +146,21 @@ void bubble_sort(LONGLONG *size, int *index, int n) {
     }
 }
 
-void counting_sort(LONGLONG *size,int *index, int n) {
+void counting_sort(LONGLONG *size, int *index, int n) {
     int *count;
-    int i, j, d, min = size[index[0]], max = size[index[0]], k = 0, s = 0;
+    LONGLONG i, j, d, min = size[index[0]], max = size[index[0]], k = 0, s = 0;
     for (i = 1; i < n; i++) {
         if (size[i] > max) max = size[i];
         if (size[i] < min) min = size[i];
     }
     d = (max - min) + 1;
-    count = (LONGLONG*)malloc(d * sizeof(LONGLONG));
+    if (d > 1024 * 1024 * 1024 * 2 / sizeof(int)) {
+        system("cls");
+        printf("Критическая ошибка выделения памяти\n");
+        printf("Работа программы будет прекращена\n");
+        exit;
+    }
+    count = (int*)malloc(d * sizeof(int));
     for (i = 0; i < d; i++) {
         count[i] = 0;
     }
@@ -163,7 +181,8 @@ void counting_sort(LONGLONG *size,int *index, int n) {
 }
 
 void quick_sort(LONGLONG *size, int *index, int first, int last) {
-    int left = first, right = last, middle = size[index[(left + right) / 2]];
+    int left = first, right = last;
+    LONGLONG middle = size[index[(left + right) / 2]];
     if (first < last) {
         do {
             while (size[index[left]] < middle) left++;
@@ -213,7 +232,7 @@ void merge_sort(LONGLONG *size,int *index, int left, int right) {
 
 // Ввод-вывод
 
-int file_counter(const wchar_t *sDir)
+int file_counter(wchar_t *sDir)
 {
 	int n = 0;
 	WIN32_FIND_DATA fdFile;
@@ -223,7 +242,7 @@ int file_counter(const wchar_t *sDir)
 	wsprintf(sPath, L"%s\\*.*", sDir);
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
 	{
-		wprintf(L"Path not found: [%s]\n", sDir);
+		wprintf(L"Путь не найден: [%s]\n", sPath);
 		return -1;
 	}
 
@@ -248,7 +267,7 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 	wsprintf(sPath, L"%s\\*.*", sDir);
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
 	{
-		wprintf(L"Path not found: [%s]\n", sDir);
+		wprintf(L"Путь не найден: [%s]\n", sDir);
 		return 1;
 	}
 
@@ -261,7 +280,7 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 			fileSize |= fdFile.nFileSizeLow;
 
 			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-            wsprintf(name[i], L"%s\\%s", sDir, fdFile.cFileName);
+            wsprintf(name[i], L"%s", fdFile.cFileName);
 			size[i++] = fileSize;
 		}
 	} while (FindNextFile(hFind, &fdFile));
@@ -273,12 +292,12 @@ void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode) {
     int i = 0;
     if (mode == 1) {
         for (i = 0; i < n; i++) {
-            wprintf(L"%s Size: %d\n", name[index[i]], size[index[i]]);
+            wprintf(L"%s Размер: %lli\n", name[index[i]], size[index[i]]);
         }
     }
     else {
         for (i = n-1; i >= 0; i--) {
-            wprintf(L"%s Size: %d\n", name[index[i]], size[index[i]]);
+            wprintf(L"%s Размер: %lli\n", name[index[i]], size[index[i]]);
         }
     }
 }
