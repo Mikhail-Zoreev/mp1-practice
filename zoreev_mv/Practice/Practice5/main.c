@@ -12,8 +12,8 @@ void bubble_sort(LONGLONG *size, int *index, int n);
 void counting_sort(LONGLONG *size, int *index, LONGLONG min, LONGLONG max, int n);
 void quick_sort(LONGLONG *size, int *index, int first, int last);
 void merge_sort(LONGLONG *size, int *index, int left, int right);
-int file_counter(const wchar_t *sDir);
-int file_reader(const wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max);
+int file_counter(wchar_t *sDir);
+int file_reader(wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max);
 void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode);
 void head_printer();
 
@@ -250,7 +250,7 @@ int file_counter(wchar_t *sDir) {
 	wsprintf(sPath, L"%s\\*.*", sDir);
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
 	{
-		wprintf(L"Путь не найден: [%s]\n", sPath);
+		wprintf(L"Путь не найден: [%s]\n", sDir);
 		return -1;
 	}
 
@@ -265,7 +265,7 @@ int file_counter(wchar_t *sDir) {
 	return n;
 }
 
-int file_reader(const wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max) {
+int file_reader(wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max) {
 	int i = 0;
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
@@ -275,7 +275,7 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min,
 	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
 	{
 		wprintf(L"Путь не найден: [%s]\n", sDir);
-		return 1;
+		return -1;
 	}
 
 	do
