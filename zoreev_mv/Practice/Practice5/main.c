@@ -9,93 +9,114 @@
 void choose_sort(LONGLONG *size, int *index, int n);
 void insert_sort(LONGLONG *size, int *index, int n);
 void bubble_sort(LONGLONG *size, int *index, int n);
-void counting_sort(LONGLONG *size, int *index, int n);
+void counting_sort(LONGLONG *size, int *index, LONGLONG min, LONGLONG max, int n);
 void quick_sort(LONGLONG *size, int *index, int first, int last);
 void merge_sort(LONGLONG *size, int *index, int left, int right);
 int file_counter(const wchar_t *sDir);
-int file_reader(const wchar_t *sDir, LONGLONG *size, char **name);
+int file_reader(const wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max);
 void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode);
+void head_printer();
 
 void main() {
-    int mode = 0, n = 0, i;
+    int sort_mode = 0, sort_directon = 0, sort_command = 0, counting_lock = 0, n = 0, i = 0;
+    LONGLONG max, min;
 	int *index;
 	LONGLONG *size;
-    char *s_path = (char*)malloc(PATH_BUFFER*sizeof(char));
-    wchar_t  *path = (wchar_t*)malloc((PATH_BUFFER)*sizeof(wchar_t));
+    char *s_path;
+    wchar_t  *path;
     wchar_t  **name;
 
     setlocale(LC_ALL, "Russian");
 
-    printf("Введите директорию\n");
-
-	do {
-        fgets(s_path, PATH_BUFFER, stdin);
-        s_path[strlen(s_path) - 1] = '\0';
-        swprintf(path, PATH_BUFFER, L"%hs", s_path);
-		n = file_counter(path);
-        if (n == 0) printf("Path is empty\n");
-	} while (n < 1);
-
-	size = (LONGLONG*)malloc(n * sizeof(LONGLONG));
-	index = (int*)malloc(n * sizeof(int));
-    name = (wchar_t**)malloc(n * sizeof(wchar_t*));
-	for (i = 0; i < n; i++) {
-		index[i] = i;
-        name[i] = (wchar_t*)malloc(256 * sizeof(char));
-        memset(name[i],0,256);
-	}
-	
-	file_reader(path, size, name);
+    s_path = (char*)malloc(PATH_BUFFER * sizeof(char));
+    path = (wchar_t*)malloc(PATH_BUFFER * sizeof(wchar_t));
 
     do {
-        printf("Для выбора соритровки введите цифру:\n");
-        printf("Сортировка выбором      1\n");
-        printf("Сортировка вставками    2\n");
-        printf("Сортировка пузырьком    3\n");
-        printf("Сортировка подсчётом    4\n");
-        printf("Быстрая сортировка      5\n");
-        printf("Сортировка слиянием     6\n");
+
+        counting_lock = 0;
+        max = 0;
+        min = 1024 * 1024 * 1024 * 2;
+
+        head_printer();
+
+        printf("Введите директорию\n");
 
         do {
-            scanf("%d", &mode);
-        } while ((mode < 1) || (mode > 6));
+            fgets(s_path, PATH_BUFFER, stdin);
+            s_path[strlen(s_path) - 1] = '\0';
+            swprintf(path, PATH_BUFFER, L"%hs", s_path);
+            n = file_counter(path);
+            if (n == 0) printf("Директоририя пуста\n");
+        } while (n < 1);
 
-        system("cls");
+        size = (LONGLONG*)malloc(n * sizeof(LONGLONG));
+        index = (int*)malloc(n * sizeof(int));
+        name = (wchar_t**)malloc(n * sizeof(wchar_t*));
+        for (i = 0; i < n; i++) {
+            index[i] = i;
+            name[i] = (wchar_t*)malloc(256 * sizeof(char));
+            memset(name[i], 0, 256);
+        }
 
-        if (mode == 1) choose_sort(size, index, n);
-        if (mode == 2) insert_sort(size, index, n);
-        if (mode == 3) bubble_sort(size, index, n);
-        if (mode == 4) counting_sort(size, index, n);
-        if (mode == 5) quick_sort(size, index, 0, n - 1);
-        if (mode == 6) merge_sort(size, index, 0, n - 1);
-
-        printf("Чтобы сортировать по возрастанию введите    1\n");
-        printf("Чтобы сортированть по убыванию введите      2\n"); 
-
-        do {
-            scanf("%d", &mode);
-        } while ((mode != 1) && (mode != 2));
-
-        system("cls");
-
-        printer(size, name, index, n, mode);
-
-        printf("\nЧтобы выбрать другую соритровку введите    1\n");
-        printf("Чтобы выйти из программы введите           2\n");
+        file_reader(path, size, name, &min, &max);
+        head_printer();
 
         do {
-            scanf("%d", &mode);
-        } while ((mode != 1) && (mode != 2));
+            printf("Для выбора соритровки введите цифру:\n");
+            printf("Сортировка выбором                    1\n");
+            printf("Сортировка вставками                  2\n");
+            printf("Сортировка пузырьком                  3\n");
+            if ((max - min + 1) < (1024*1024*1024*2 / sizeof(int))) {
+                printf("Сортировка подсчётом                  4\n");
+            }
+            else {
+                printf("Сортировка подсчётом не доступна\n");
+                counting_lock = 1;
+            }
+            printf("Быстрая сортировка                    5\n");
+            printf("Сортировка слиянием                   6\n");
 
-        system("cls");
-         
-    } while (mode != 2);
+            do {
+                scanf("%d", &sort_mode);
+            } while (((sort_mode < 1) || (sort_mode > 6)) || ((sort_mode == 4) && (counting_lock == 1)));
 
-    free(index);
-    free(size);
-    free(s_path);
-    free(*name);
-    free(name);
+            head_printer();
+
+            if (sort_mode == 1) choose_sort(size, index, n);
+            if (sort_mode == 2) insert_sort(size, index, n);
+            if (sort_mode == 3) bubble_sort(size, index, n);
+            if (sort_mode == 4) counting_sort(size, index, min, max, n);
+            if (sort_mode == 5) quick_sort(size, index, 0, n - 1);
+            if (sort_mode == 6) merge_sort(size, index, 0, n - 1);
+
+            printf("Чтобы сортировать по возрастанию введите    1\n");
+            printf("Чтобы сортированть по убыванию введите      2\n");
+
+            do {
+                scanf("%d", &sort_directon);
+            } while ((sort_directon != 1) && (sort_directon != 2));
+
+            head_printer();
+
+            printer(size, name, index, n, sort_mode);
+
+            printf("\nЧтобы выбрать другую сортировку введите   1\n");
+            printf("Чтобы сменить директорию введите          2\n");
+            printf("Чтобы выйти из программы введите          3\n");
+
+            do {
+                scanf("%d%*c", &sort_command);
+            } while ((sort_command < 1) && (sort_command > 3));
+
+            head_printer();
+
+        } while ((sort_command != 2) && (sort_command != 3));
+        free(index);
+        free(size);
+        free(*name);
+        free(name);
+    } while (sort_command != 3);
+
 }
 
 //Сортировки
@@ -146,20 +167,10 @@ void bubble_sort(LONGLONG *size, int *index, int n) {
     }
 }
 
-void counting_sort(LONGLONG *size, int *index, int n) {
+void counting_sort(LONGLONG *size, int *index, LONGLONG min, LONGLONG max, int n) {
     int *count;
-    LONGLONG i, j, d, min = size[index[0]], max = size[index[0]], k = 0, s = 0;
-    for (i = 1; i < n; i++) {
-        if (size[i] > max) max = size[i];
-        if (size[i] < min) min = size[i];
-    }
+    LONGLONG i, j, d, k = 0, s = 0;
     d = (max - min) + 1;
-    if (d > 1024 * 1024 * 1024 * 2 / sizeof(int)) {
-        system("cls");
-        printf("Критическая ошибка выделения памяти\n");
-        printf("Работа программы будет прекращена\n");
-        exit;
-    }
     count = (int*)malloc(d * sizeof(int));
     for (i = 0; i < d; i++) {
         count[i] = 0;
@@ -230,10 +241,7 @@ void merge_sort(LONGLONG *size,int *index, int left, int right) {
     free(temp);
 }
 
-// Ввод-вывод
-
-int file_counter(wchar_t *sDir)
-{
+int file_counter(wchar_t *sDir) {
 	int n = 0;
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
@@ -257,8 +265,7 @@ int file_counter(wchar_t *sDir)
 	return n;
 }
 
-int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
-{
+int file_reader(const wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max) {
 	int i = 0;
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
@@ -278,7 +285,8 @@ int file_reader(const wchar_t *sDir, LONGLONG *size, char **name)
 			ULONGLONG fileSize = fdFile.nFileSizeHigh;
 			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
 			fileSize |= fdFile.nFileSizeLow;
-
+            if (fileSize < *min) *min = fileSize;
+            if (fileSize > *max) *max = fileSize;
 			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
             wsprintf(name[i], L"%s", fdFile.cFileName);
 			size[i++] = fileSize;
@@ -292,12 +300,20 @@ void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode) {
     int i = 0;
     if (mode == 1) {
         for (i = 0; i < n; i++) {
-            wprintf(L"%s Размер: %lli\n", name[index[i]], size[index[i]]);
+            wprintf(L"Размер: %-14lli   %s\n", size[index[i]], name[index[i]]);
         }
     }
     else {
         for (i = n-1; i >= 0; i--) {
-            wprintf(L"%s Размер: %lli\n", name[index[i]], size[index[i]]);
+            wprintf(L"Размер: %-14lli    %s\n", size[index[i]], name[index[i]]);
         }
     }
+}
+
+void head_printer() {
+    system("cls");
+    printf("===========================================\n");
+    printf("Файловый  менеджер  ННГУ  им.  Лобачевского\n");
+    printf("2018 год                 Все права защищены\n");
+    printf("===========================================\n\n");
 }
