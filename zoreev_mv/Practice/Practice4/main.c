@@ -130,6 +130,7 @@ void printing() {
 
 void main() {
     int code = 0, input = 0;
+    char str_code[4];
     setlocale(LC_ALL, "Russian");
     data_generation();
 
@@ -138,7 +139,8 @@ void main() {
     while (input != 4) {
 
         do {
-            scanf("%d", &code);
+            scanf("%s", str_code); //Я не понял почему нельзя сканировать int
+            code = atoi(str_code);
         } while ((code < 1) || (code > 9999));
 
         system("cls");
