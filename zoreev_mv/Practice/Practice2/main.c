@@ -5,7 +5,7 @@
 #include <math.h>
 
 void main() {
-	int n, cow, bull, i, out;
+	int n, cow, bull, i, out, count = 0, temp = 0;
 	int free[10] =  { 0 }, number[10] = { 0 }, input[10] = { 0 }, Cfree[10] = { 0 };
 	long a;
 	setlocale(LC_ALL, "Russian");
@@ -13,12 +13,10 @@ void main() {
 
 	//Ввод
 	
-	while (1) {
-		printf("Введите количество цифр ");
+	do {
+		printf("Input count of numbers ");
 		scanf("%d", &n);
-		if ((n > 0) && (n < 11)) break;
-		printf("Ошибка ввода\n");
-	}
+    } while ((n < 1) || (n > 10));
 
 	//Генерация числа
 
@@ -39,15 +37,21 @@ void main() {
 	do {
 		
 		do {
-			
 			out = 0;
-			free[0] = 0; free[1] = 0; free[2] = 0; free[3] = 0; free[4] = 0; free[5] = 0; free[6] = 0; free[7] = 0; free[8] = 0; free[9] = 0;
-			//Это быстрее чем обнулять циклом
+            memset(free, 0, 10*sizeof(int));
 
-			printf("Введите число ");
+			printf("Input number ");
 			scanf("%ld", &a);
-			if ((a < pow(10, (n - 1))) || (a >= pow(10, (n)))) {
-				printf("Выход за диапозон\n");
+
+            temp = a;
+            count = 0;
+            while (temp > 0) {
+                temp = temp / 10;
+                count++;
+            }
+
+			if (count != n) {
+				printf("Out of range\n");
 				out = 1;
 				continue;
 			}
@@ -55,7 +59,7 @@ void main() {
 			for (i = n-1; i >= 0; i--) { //заполняется от младших к старшим
 				if (free[(a % 10)] == 1) {
 					out = 1;
-					printf("Повторение цифр\n");
+					printf("repeating of nubers\n");
 					break;
 				}
 				input[i] = a % 10;
@@ -79,11 +83,10 @@ void main() {
 		cow = cow - bull;
 
 		if (bull < n) {
-			printf("Коров %d\nБыков %d\n", cow, bull);
+			printf("Cows %d\nBulls %d\n", cow, bull);
 		}
 		else {
-			printf("\nПоздравляю, вы угадали число!\n");
+			printf("\nYou win!\n");
 		}
-
 	} while (bull < n);
 }
