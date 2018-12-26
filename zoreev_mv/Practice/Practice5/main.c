@@ -2,6 +2,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <time.h>
 #define PATH_BUFFER 2048
 
 //Прототипы функций
@@ -20,6 +21,7 @@ void head_printer();
 void main() {
     int sort_mode = 0, sort_directon = 0, sort_command = 0, counting_lock = 0, n = 0, i = 0;
     LONGLONG max, min;
+    float start, end;
 	int *index;
 	LONGLONG *size;
     char *s_path;
@@ -82,12 +84,36 @@ void main() {
 
             head_printer();
 
-            if (sort_mode == 1) choose_sort(size, index, n);
-            if (sort_mode == 2) insert_sort(size, index, n);
-            if (sort_mode == 3) bubble_sort(size, index, n);
-            if (sort_mode == 4) counting_sort(size, index, min, max, n);
-            if (sort_mode == 5) quick_sort(size, index, 0, n - 1);
-            if (sort_mode == 6) merge_sort(size, index, 0, n - 1);
+            if (sort_mode == 1) {
+                start = clock();
+                choose_sort(size, index, n);
+                end = clock();
+            }
+            if (sort_mode == 2) {
+                start = clock();
+                insert_sort(size, index, n);
+                end = clock();
+            }
+            if (sort_mode == 3) {
+                start = clock();
+                bubble_sort(size, index, n);
+                end = clock();
+            }
+            if (sort_mode == 4) {
+                start = clock();
+                counting_sort(size, index, min, max, n);
+                end = clock();
+            }
+            if (sort_mode == 5) {
+                start = clock();
+                quick_sort(size, index, 0, n - 1);
+                end = clock();
+            }
+            if (sort_mode == 6) {
+                 start = clock();
+                merge_sort(size, index, 0, n - 1);
+                end = clock();
+            }
 
             printf("Чтобы сортировать по возрастанию введите    1\n");
             printf("Чтобы сортированть по убыванию введите      2\n");
@@ -100,6 +126,7 @@ void main() {
 
             printer(size, name, index, n, sort_mode);
 
+            printf("\nОтсортировано за %f секунд\n", ((end - start) / CLOCKS_PER_SEC));
             printf("\nЧтобы выбрать другую сортировку введите   1\n");
             printf("Чтобы сменить директорию введите          2\n");
             printf("Чтобы выйти из программы введите          3\n");
