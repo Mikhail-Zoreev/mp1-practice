@@ -9,23 +9,10 @@ void main() {
     int mode, input, answer, i=0, dif,b1,b2;
     char out;
 
-    while (1) {
-        printf("Выберите режим игры 1 или 2\n");
+    do {
+        printf("Select game mode 1 or 2\n");
         scanf("%d",&mode);
-        if ((mode == 1) || (mode == 2)) break;
-        printf("Ошибка. ");
-    }
-
-    if (mode == 2) {
-        while (1) {
-            printf("Выберите сложность 1 или 2\n");
-            scanf("%d", &dif);
-            if ((mode == 1) || (mode == 2)) break;
-            printf("Ошибка. ");
-        }
-    }
-
-
+    } while ((mode < 1) || (mode > 2));
 
     //Режим 1
 
@@ -38,11 +25,9 @@ void main() {
             i++;
             
             while (1) {
-                printf("Введите число ");
+                printf("Input number ");
                 scanf("%d", &answer);
-                if ((answer > 0) && (answer < 1001)) break;
-                printf("Ошибка. ");
-            }
+            } while ((answer < 1) || (answer > 1000));
 
             if (answer < input)
                 printf("Введённое меньше\n\n");
@@ -54,73 +39,30 @@ void main() {
             }
         }
     }
-    
-    
-    //Режим 2. Простая сложность
 
-    if (dif == 1) {
+    //Режим 2
 
-        while (1) {
-            printf("Введите загаданное число ");
+    if (mode == 2) {
+
+        do {
+            printf("Input number ");
             scanf("%d", &input);
-            if ((input > 0) || (input < 1001)) break;
-            printf("Ошибка ввода\n");
-        }
-
-        b1 = 1; b2 = 1001;
-
-        while (1) {
-
-            answer = rand() % (b2 - b1) + b1;
-            i++;
-
-            while (1) {
-                printf("Число %d ... загаданного ", answer);
-                scanf("%*c%c", &out);
-                if ((out == '>') || (out == '<') || (out == '=')) break;
-                printf("Ошибка ввода\n");
-            }
-
-            if (out == '>') b2 = answer - 1;
-            if (out == '<') b1 = answer + 1;
-            if (out == '=') {
-                printf("Компьютер выиграл за %d попыток\n", i);
-                return;
-            }
-        }
-    }
-
-    //Режим 2. Высокая сложность
-
-    if (dif == 2) {
-
-        while (1) {
-            printf("Введите загаданное число ");
-            scanf("%d", &input);
-            if ((input > 0) || (input < 1001)) break;
-            printf("Ошибка ввода\n");
-        }
+        } while ((input < 1) || (input > 1000));
 
         b1 = 0; b2 = 1001;
 
-        while (1) {
+        do {
 
             i++;
 
-            while (1) {
-                printf("Число %d ... загаданного ", (b2 - b1) / 2 +b1);
+            do {
+                printf("Count %d ... then hidden ", (b2 - b1) / 2 +b1);
                 scanf("%*c%c", &out);
-                if ((out == '>') || (out == '<') || (out == '=')) break;
-                printf("Ошибка ввода\n");
-            }
+            } while ((out != '>') && (out != '<') && (out != '='));
 
             if (out == '>') b2 = (b2-b1) / 2 +b1 ;
             if (out == '<') b1 = (b2-b1) / 2 +b1 ;
-            if (out == '=') {
-                printf("Компьютер выиграл за %d попыток\n", i);
-                return;
-            }
-        }
-
+        } while (out != '=');
+        printf("Computer win at %d step\n", i);
     }
 }
