@@ -17,6 +17,7 @@ int file_counter(wchar_t *sDir);
 int file_reader(wchar_t *sDir, LONGLONG *size, char **name, LONGLONG* min, LONGLONG* max);
 void printer(LONGLONG *size, wchar_t **name, int *index, int n, int mode);
 void head_printer();
+void path_reader(wchar_t** path);
 
 void main() {
     int sort_mode = 0, sort_directon = 0, sort_command = 0, counting_lock = 0, n = 0, i = 0;
@@ -24,13 +25,11 @@ void main() {
     float start, end;
 	int *index;
 	LONGLONG *size;
-    char *s_path;
     wchar_t  *path;
     wchar_t  **name;
 
     setlocale(LC_ALL, "Russian");
 
-    s_path = (char*)malloc(PATH_BUFFER * sizeof(char));
     path = (wchar_t*)malloc(PATH_BUFFER * sizeof(wchar_t));
 
     do {
@@ -44,9 +43,7 @@ void main() {
         printf("Введите директорию\n");
 
         do {
-            fgets(s_path, PATH_BUFFER, stdin);
-            s_path[strlen(s_path) - 1] = '\0';
-            swprintf(path, PATH_BUFFER, L"%hs", s_path);
+            path_reader(&path);
             n = file_counter(path);
             if (n == 0) printf("Директоририя пуста\n");
         } while (n < 1);
@@ -343,4 +340,12 @@ void head_printer() {
     printf("Файловый  менеджер  ННГУ  им.  Лобачевского\n");
     printf("2018 год                 Все права защищены\n");
     printf("===========================================\n\n");
+}
+
+void path_reader(wchar_t** path) {
+    char *s_path;
+    s_path = (char*)malloc(PATH_BUFFER * sizeof(char));
+    fgets(s_path, PATH_BUFFER, stdin);
+    s_path[strlen(s_path) - 1] = '\0';
+    swprintf(*path, PATH_BUFFER, L"%hs", s_path);
 }
