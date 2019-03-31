@@ -6,7 +6,7 @@
 void main() {
     setlocale(LC_ALL, "Russian");
     srand((unsigned int) time(0));
-    int mode, input, answer, i=0, dif,b1,b2;
+    int mode, input, answer  = 0, i=0, dif,b1,b2;
     char out;
 
     do {
