@@ -1,4 +1,4 @@
-#include <stdio.h>
+п»ї#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <locale.h>
@@ -13,7 +13,7 @@ void main()
     vector_input(&a);
     vector_input(&b);
     vector_create(&c, 1);
-    printf("Выберите действие: a+b, a-b, a*b, a*m, |a|, exit\n");
+    printf("Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: a+b, a-b, a*b, a*m, |a|, exit\n");
     do
     {
         scanf("%d", &control);
@@ -26,7 +26,7 @@ void main()
             }
             else
             {
-                printf("Неподходящий вектор\n");
+                printf("РќРµРїРѕРґС…РѕРґСЏС‰РёР№ РІРµРєС‚РѕСЂ\n");
             }
             break;
         case 2:
@@ -36,7 +36,7 @@ void main()
             }
             else
             {
-                printf("Неподходящий вектор\n");
+                printf("РќРµРїРѕРґС…РѕРґСЏС‰РёР№ РІРµРєС‚РѕСЂ\n");
             }
             break;
         case 3:
@@ -46,11 +46,11 @@ void main()
             }
             else
             {
-                printf("Неподходящий вектор\n");
+                printf("РќРµРїРѕРґС…РѕРґСЏС‰РёР№ РІРµРєС‚РѕСЂ\n");
             }
             break;
         case 4:
-            printf("Введите m ");
+            printf("Р’РІРµРґРёС‚Рµ m ");
             scanf("%lf", &m);
             if (!vector_multiply(&c, a, m))
             {
@@ -58,7 +58,7 @@ void main()
             }
             else
             {
-                printf("Неподходящий вектор\n");
+                printf("РќРµРїРѕРґС…РѕРґСЏС‰РёР№ РІРµРєС‚РѕСЂ\n");
             }
             break;
         case 5:
@@ -68,7 +68,7 @@ void main()
             }
             else
             {
-                printf("Неподходящий вектор\n");
+                printf("РќРµРїРѕРґС…РѕРґСЏС‰РёР№ РІРµРєС‚РѕСЂ\n");
             }
             break;
         } 

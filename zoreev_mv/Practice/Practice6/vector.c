@@ -1,4 +1,4 @@
-#include "vector.h"
+п»ї#include "vector.h"
 
 void vector_create(vector* temp, int size)
 {
@@ -14,14 +14,14 @@ void vector_create(vector* temp, int size)
 void vector_input(vector* temp)
 {
     int i, size = 0;
-    printf("Введите размерность вектора\n");
+    printf("Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РІРµРєС‚РѕСЂР°\n");
     do
     {
         scanf("%d", &size);
     } while (size <= 0);
     temp->size = size;
     temp->array = (double*)malloc(sizeof(double) * size);
-    printf("Введите координаты вектора\n");
+    printf("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РІРµРєС‚РѕСЂР°\n");
     for (i = 0; i < size; i++)
     {
         scanf("%lf", &(temp->array[i]));
