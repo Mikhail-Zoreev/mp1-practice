@@ -3,11 +3,16 @@
 #include <iostream>
 using namespace std;
 
-struct ExeptionBadLength
+enum exeption_type {BadLength, BadIndex};
+
+struct exeption
 {
-};
-struct ExeptionBadIndex
-{
+    exeption_type exp_type;
+
+    exeption(exeption_type type)
+    {
+        exp_type = type;
+    }
 };
 
 struct vector
@@ -36,6 +41,11 @@ struct vector
             array[i] = _array[i];
         }
     }
+    /*Привет я конструктор копирования, забавный факт обо мне:
+    может покзаться что я бесполезен, но это не так, я нужен
+    для передачи локальных переменных функции в другую функцию,
+    но об этом разумеется никто не рассказывал, зато вы теперь об
+    этом знаете :D Удачи!*/
     vector(vector& temp) {
         size = temp.size;
         array = new double[size];

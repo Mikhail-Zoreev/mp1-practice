@@ -10,3 +10,6 @@
 *.ilk
 *.db
 zoreev_mv/Practice/.vs/Practice/v15/.suo
+*.db-shm
+*.opendb
+*.db-wal

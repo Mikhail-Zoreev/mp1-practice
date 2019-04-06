@@ -24,7 +24,7 @@ double& vector::operator[](int index)
 {
     if ((index < 0) || (index >= size))
     {
-        throw ExeptionBadIndex();
+        throw exeption(BadIndex);
     }
     return array[index];
 }
@@ -33,7 +33,7 @@ vector vector::operator+=( const vector& temp)
 {
     if (size != temp.size)
     {
-        throw ExeptionBadLength();
+        throw exeption(BadLength);
     }
     for (int i = 0; i < size; i++)
     {
@@ -55,7 +55,7 @@ vector vector::operator-=(const vector& temp)
 {
     if (size != temp.size)
     {
-        throw ExeptionBadLength();
+        throw exeption(BadLength);
     }
     for (int i = 0; i < size; i++)
     {
@@ -127,55 +127,55 @@ vector operator+(const vector& a, const vector& b)
 {
     if (a.size != b.size)
     {
-        throw ExeptionBadLength();
+        throw exeption(BadLength);
     }
-    vector* out = new vector(a.size);
+    vector out(a.size);
     for (int i = 0; i < a.size; i++)
     {
-        out->array[i] = a.array[i] + b.array[i];
+        out.array[i] = a.array[i] + b.array[i];
     }
-    return *out;
+    return out;
 }
 
 vector operator+(const vector& a, const double b)
 {
-    vector* out = new vector(a.size);
+    vector out(a.size);
     for (int i = 0; i < a.size; i++)
     {
-        out->array[i] = a.array[i] + b;
+        out.array[i] = a.array[i] + b;
     }
-    return *out;
+    return out;
 }
 
 vector operator-(const vector& a, const vector& b)
 {
     if (a.size != b.size)
     {
-        throw ExeptionBadLength();
+        throw exeption(BadLength);
     }
-    vector* out = new vector(a.size);
+    vector out(a.size);
     for (int i = 0; i < a.size; i++)
     {
-        out->array[i] = a.array[i] - b.array[i];
+        out.array[i] = a.array[i] - b.array[i];
     }
-    return *out;
+    return out;
 }
 
 vector operator-(const vector& a, const double b)
 {
-    vector* out = new vector(a.size);
+    vector out(a.size);
     for (int i = 0; i < a.size; i++)
     {
-        out->array[i] = a.array[i] - b;
+        out.array[i] = a.array[i] - b;
     }
-    return *out;
+    return out;
 }
 
 double operator*(const vector& a, const vector& b)
 {
     if (a.size != b.size)
     {
-        throw ExeptionBadLength();
+        throw exeption(BadLength);
     }
     double out = 0;
     for (int i = 0; i < a.size; i++)
