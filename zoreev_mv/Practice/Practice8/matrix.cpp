@@ -149,18 +149,18 @@ matrix matrix::operator-(double temp)
 
 matrix matrix::operator*(const matrix& temp)
 {
-    if ((m != temp.n) || (n != temp.m))
+    if ((m != temp.n) || (n != temp.m) || (n < m))
     {
         throw exeption(BadSize);
     }
-    matrix out(m, n);
+    matrix out(m, temp.n);
     for (unsigned int i = 0; i < m; i++)
     {
-        for (unsigned int j = 0; j < n; j++)
+        for (unsigned int j = 0; j < temp.n; j++)
         {
             for (unsigned int k = 0; k < n; k++)
             {
-                out.array[i * n + j] += array[i * n + k] + temp.array[k * temp.n + j];
+                out.array[i * out.n + j] += array[i * n + k] * temp.array[k * temp.n + j];
             }
         }
     }
