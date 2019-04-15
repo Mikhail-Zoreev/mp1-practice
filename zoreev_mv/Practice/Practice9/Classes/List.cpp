@@ -59,11 +59,40 @@ void list::create()
         }
         return;
     }
+
+    //≈сли надо заменить первого
+    if (control)
+    {
+        if (temp_date < head->value->getDate())
+        {
+            list_item* ins_item = new list_item;
+            ins_item->next = head;
+            head = ins_item;
+            ins_item->value = new task_day(temp_date);
+            ins_item->value->input();
+            return;
+        }
+    }
+    else
+    {
+        cout << "Input beggining time ";
+        temp_time.input();
+        if ((temp_date < head->value->getDate()) || ((temp_date == head->value->getDate()) && (temp_time < head->value->getTime())))
+        {
+            list_item* ins_item = new list_item;
+            ins_item->next = head;
+            head = ins_item;
+            ins_item->value = new task_std(temp_date, temp_time);
+            ins_item->value->input();
+            return;
+        }
+    }
+
     //“от случай когда надо подогнать по времени и дате
     list_item* i = head;
     if (control)
     {
-        for (; (i->next != nullptr) && (temp_date < i->value->getDate()); i = i->next)
+        for (; (i->next != nullptr) && (temp_date > i->next->value->getDate()); i = i->next)
         {
         }
         list_item* ins_item = new list_item;
@@ -71,12 +100,13 @@ void list::create()
         i->next = ins_item;
         ins_item->value = new task_day(temp_date);
         ins_item->value->input();
+        return;
     }
     else
     {
         cout << "Input beggining time ";
         temp_time.input();
-        for (; ((i->next != nullptr) && ((temp_date > i->value->getDate()) || ((temp_date == i->value->getDate()) && (temp_time > i->value->getTime())))); i = i->next)
+        for (; ((i->next != nullptr) && ((temp_date > i->next->value->getDate()) || ((temp_date == i->next->value->getDate()) && (temp_time > i->next->value->getTime())))); i = i->next)
         {
         }
         list_item* ins_item = new list_item;
@@ -84,6 +114,7 @@ void list::create()
         i->next = ins_item;
         ins_item->value = new task_std(temp_date, temp_time);
         ins_item->value->input();
+        return;
     }
 }
 
