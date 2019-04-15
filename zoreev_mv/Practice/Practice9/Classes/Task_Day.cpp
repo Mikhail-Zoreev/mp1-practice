@@ -16,6 +16,11 @@ task_day::task_day(const task_day& temp)
     description = temp.description;
 }
 
+time task_day::getTime()
+{
+    return time();
+}
+
 void task_day::input()
 {
     /*cout << "Input task date ";

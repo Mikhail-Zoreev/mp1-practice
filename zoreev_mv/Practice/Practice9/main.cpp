@@ -2,8 +2,8 @@
 
 int main()
 {
-    task_std a;
-    a.input();
-    a.print();
+    list note;
+    note.create();
+    note.create();
     return 0;
 }

@@ -10,6 +10,7 @@ public:
     task_day(const date&);
     task_day(const task_day&);
     
+    time getTime();
     void input();
     bool isStd();
     void print();

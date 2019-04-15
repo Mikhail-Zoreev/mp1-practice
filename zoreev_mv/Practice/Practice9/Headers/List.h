@@ -23,4 +23,5 @@ public:
 
     void create();
     void remove();
+    void print();
 };
