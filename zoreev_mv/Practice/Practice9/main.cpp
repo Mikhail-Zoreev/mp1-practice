@@ -1,6 +1,9 @@
 #include "includes.h"
 
-void main()
+int main()
 {
-
+    task_std a;
+    a.input();
+    a.print();
+    return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <istream>
 #include "Date.h"
 
 using namespace std;
@@ -15,6 +16,7 @@ public:
     task(const task&);
 
     date getDate();
+    virtual void input() = 0;
     virtual bool isStd() = 0;
     virtual void print() = 0;
 };

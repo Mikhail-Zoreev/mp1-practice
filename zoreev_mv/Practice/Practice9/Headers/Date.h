@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+
+using namespace std;
 
 class date
 {
@@ -16,4 +19,9 @@ public:
     unsigned getDay();
     unsigned getMonth();
     unsigned getYear();
+
+    void input();
+    void setDay(unsigned);
+    void setMonth(unsigned);
+    void setYear(unsigned);
 };

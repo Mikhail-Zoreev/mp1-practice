@@ -42,3 +42,15 @@ unsigned time::getMinutes()
 {
     return (minutes % 60);
 }
+
+void time::input()
+{
+    unsigned _hours, _minutes;
+    cin >> _hours >> _minutes;
+    minutes = _hours * 60 + _minutes;
+}
+
+void time::setTime(unsigned _hours, unsigned _minutes)
+{
+    minutes = _hours * 60 + _minutes;
+}

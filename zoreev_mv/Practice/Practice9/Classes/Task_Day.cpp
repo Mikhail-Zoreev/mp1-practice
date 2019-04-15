@@ -13,7 +13,10 @@ task_day::task_day(const task_day& temp)
 
 void task_day::input()
 {
-
+    cout << "Input task date ";
+    task_date.input();
+    cout << "Input task description" << endl;
+    //
 }
 
 bool task_day::isStd()
@@ -23,5 +26,5 @@ bool task_day::isStd()
 
 void task_day::print()
 {
-
+    cout << description;
 }

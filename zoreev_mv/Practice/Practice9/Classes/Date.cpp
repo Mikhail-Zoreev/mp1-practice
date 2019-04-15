@@ -43,3 +43,22 @@ unsigned date::getYear()
 {
     return year;
 }
+
+void date::input()
+{
+    cin >> day >> month >> year;
+}
+
+void date::setDay(unsigned _day)
+{
+    day = _day;
+}
+void date::setMonth(unsigned _month)
+{
+    month = _month;
+}
+
+void date::setYear(unsigned _year)
+{
+    year = _year;
+}
