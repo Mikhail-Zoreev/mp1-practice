@@ -10,6 +10,7 @@ public:
     time(unsigned _minutes);
     time(unsigned _hours, unsigned _minutes);
 
+    time& operator=(const time&);
     time operator+(const time&);
 
     unsigned getHours();

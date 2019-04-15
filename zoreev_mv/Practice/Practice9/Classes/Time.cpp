@@ -13,19 +13,23 @@ time::time(const time& temp)
 time::time(unsigned _minutes)
 {
     minutes = _minutes;
-    while (minutes > 1440) minutes -= 1440;
-    /*Может пригдится, чтобы указывать время конца занятия, если оно приходится на следующий день*/
 }
 
 time::time(unsigned _hours, unsigned _minutes)
 {
     minutes = _hours * 60 + _minutes;
-    while (minutes > 1440) minutes -= 1440;
+}
+
+time& time::operator=(const time& temp)
+{
+    minutes = temp.minutes;
+    return *this;
 }
 
 time time::operator+(const time& temp)
 {
     time out(minutes + temp.minutes);
+    while (minutes > 1440) minutes -= 1440;
     return out;
 }
 

@@ -21,6 +21,14 @@ date::date(unsigned _day, unsigned _month, unsigned _year)
     year = _year;
 }
 
+date& date::operator=(const date& temp)
+{
+    day = temp.day;
+    month = temp.month;
+    year = temp.year;
+    return *this;
+}
+
 unsigned date::getDay()
 {
     return day;

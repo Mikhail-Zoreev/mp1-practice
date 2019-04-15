@@ -123,6 +123,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\Date.cpp" />
+    <ClCompile Include="Classes\Task.cpp" />
+    <ClCompile Include="Classes\Task_Day.cpp" />
+    <ClCompile Include="Classes\Task_Std.cpp" />
     <ClCompile Include="Classes\Time.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

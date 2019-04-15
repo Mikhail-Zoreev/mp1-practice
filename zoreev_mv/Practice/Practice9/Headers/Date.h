@@ -11,6 +11,8 @@ public:
     date(const date&);
     date(unsigned, unsigned, unsigned);
 
+    date& operator=(const date&);
+
     unsigned getDay();
     unsigned getMonth();
     unsigned getYear();
