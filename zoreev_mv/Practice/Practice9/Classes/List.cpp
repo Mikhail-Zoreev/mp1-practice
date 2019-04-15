@@ -76,7 +76,7 @@ void list::create()
     {
         cout << "Input beggining time ";
         temp_time.input();
-        for (; (i->next != nullptr) && ((temp_date < i->value->getDate()) || ((temp_date == i->value->getDate()) && (temp_time < i->value->getTime()))); i = i->next)
+        for (; ((i->next != nullptr) && ((temp_date > i->value->getDate()) || ((temp_date == i->value->getDate()) && (temp_time > i->value->getTime())))); i = i->next)
         {
         }
         list_item* ins_item = new list_item;
@@ -84,5 +84,14 @@ void list::create()
         i->next = ins_item;
         ins_item->value = new task_std(temp_date, temp_time);
         ins_item->value->input();
+    }
+}
+
+void list::print()
+{
+    for (list_item* i = head; i; i = i->next)
+    {
+        i->value->print();
+        cout << endl;
     }
 }
