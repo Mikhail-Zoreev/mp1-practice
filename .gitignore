@@ -15,3 +15,5 @@ zoreev_mv/Practice/.vs/Practice/v15/.suo
 *.db-wal
 zoreev_mv/Practice/.vs/Practice/v16/.suo
 zoreev_mv/Practice/Practice8/Debug/main.obj.enc
+.vs/slnx.sqlite
+.vs/ProjectSettings.json
