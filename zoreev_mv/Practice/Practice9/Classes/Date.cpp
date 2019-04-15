@@ -29,6 +29,33 @@ date& date::operator=(const date& temp)
     return *this;
 }
 
+bool date::operator<(const date& temp)
+{
+    if (year < temp.year) return true;
+    if (year > temp.year) return false;
+    if (month < temp.month) return true;
+    if (month > temp.month) return false;
+    if (day < temp.day) return true;
+    if (day > temp.day) return false;
+    return false;
+}
+
+bool date::operator>(const date& temp)
+{
+    if (year > temp.year) return true;
+    if (year < temp.year) return false;
+    if (month > temp.month) return true;
+    if (month < temp.month) return false;
+    if (day > temp.day) return true;
+    if (day < temp.day) return false;
+    return false;
+}
+bool date::operator==(const date& temp)
+{
+    if ((year == temp.year) && (month == temp.month) && (day == temp.day)) return true;
+    return false;
+}
+
 unsigned date::getDay()
 {
     return day;

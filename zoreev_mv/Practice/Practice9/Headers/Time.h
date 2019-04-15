@@ -15,6 +15,9 @@ public:
 
     time& operator=(const time&);
     time operator+(const time&);
+    bool operator<(const time&);
+    bool operator>(const time&);
+    bool operator==(const time&);
 
     unsigned getHours();
     unsigned getMinutes();

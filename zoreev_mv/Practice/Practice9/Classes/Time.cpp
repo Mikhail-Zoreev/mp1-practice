@@ -33,6 +33,23 @@ time time::operator+(const time& temp)
     return out;
 }
 
+bool time::operator<(const time& temp)
+{
+    if (minutes < temp.minutes) return true;
+    return false;
+}
+bool time::operator>(const time& temp)
+
+{
+    if (minutes > temp.minutes) return true;
+    return false;
+}
+bool time::operator==(const time& temp)
+{
+    if (minutes == temp.minutes) return true;
+    return false;
+}
+
 unsigned time::getHours()
 {
     return (minutes / 60);

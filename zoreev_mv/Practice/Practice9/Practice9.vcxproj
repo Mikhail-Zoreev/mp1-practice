@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Date.cpp" />
+    <ClCompile Include="Classes\List.cpp" />
     <ClCompile Include="Classes\Task.cpp" />
     <ClCompile Include="Classes\Task_Day.cpp" />
     <ClCompile Include="Classes\Task_Std.cpp" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Date.h" />
+    <ClInclude Include="Headers\List.h" />
     <ClInclude Include="Headers\Task.h" />
     <ClInclude Include="Headers\Task_Day.h" />
     <ClInclude Include="Headers\Task_Std.h" />

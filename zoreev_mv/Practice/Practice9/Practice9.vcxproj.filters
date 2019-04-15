@@ -31,6 +31,9 @@
     <ClCompile Include="Classes\Task_Std.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Classes\List.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.h">
@@ -49,6 +52,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Task.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\List.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

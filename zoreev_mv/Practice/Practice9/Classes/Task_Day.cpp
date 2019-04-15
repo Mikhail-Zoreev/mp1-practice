@@ -5,6 +5,11 @@ task_day::task_day()
     
 }
 
+task_day::task_day(const date& _date)
+{
+    task_date = _date;
+}
+
 task_day::task_day(const task_day& temp)
 {
     task_date = temp.task_date;
@@ -13,8 +18,8 @@ task_day::task_day(const task_day& temp)
 
 void task_day::input()
 {
-    cout << "Input task date ";
-    task_date.input();
+    /*cout << "Input task date ";
+    task_date.input();*/
     cout << "Input task description" << endl;
     //
 }
