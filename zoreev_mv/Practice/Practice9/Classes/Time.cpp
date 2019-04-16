@@ -63,7 +63,10 @@ unsigned time::getMinutes()
 void time::input()
 {
     unsigned _hours, _minutes;
-    cin >> _hours >> _minutes;
+    do
+    {
+        cin >> _hours >> _minutes;
+    } while ((_hours > 23) || (_minutes > 59));
     minutes = _hours * 60 + _minutes;
 }
 

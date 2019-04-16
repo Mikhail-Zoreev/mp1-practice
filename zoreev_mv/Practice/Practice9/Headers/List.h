@@ -24,4 +24,7 @@ public:
     void create();
     void remove();
     void print();
+    void fprint();
+    void fread();
+    void fwrite();
 };

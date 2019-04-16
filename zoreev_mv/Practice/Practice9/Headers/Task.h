@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <istream>
 #include "Date.h"
 #include "Time.h"
 
@@ -10,7 +9,7 @@ class task
 {
 protected:
     date task_date;
-    string description;
+    char* description;
 
 public:
     task();

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../Headers/List.h"
 #include "../Headers/Time.h"
 #include "../Headers/Date.h"
@@ -75,10 +76,11 @@ void list::create()
     }
     else
     {
-        cout << "Input beggining time ";
-        temp_time.input();
+        
         if ((temp_date < head->value->getDate()) || ((temp_date == head->value->getDate()) && (temp_time < head->value->getTime())))
         {
+            cout << "Input beggining time ";
+            temp_time.input();
             list_item* ins_item = new list_item;
             ins_item->next = head;
             head = ins_item;
@@ -118,11 +120,53 @@ void list::create()
     }
 }
 
+void list::remove()
+{
+    
+}
+
 void list::print()
 {
-    for (list_item* i = head; i; i = i->next)
+    date print_date;
+    cout << "Input day to show ";
+    print_date.input();
+    list_item* i = head;
+    if (i == NULL)
+    {
+        cout << "Your to do list is empty" << endl;
+        return;
+    }
+    for (; (i != NULL) && !(i->value->getDate() == print_date); i = i->next);
+    {
+    }
+    if (i == NULL)
+    {
+        cout << "Tasks for this day unfounded";
+        return;
+    }
+
+    for (;(i != NULL) && (i->value->getDate() == print_date && i->value->isStd()); i = i->next)
     {
         i->value->print();
         cout << endl;
     }
+    if ((i != NULL) && (i->value->getDate() == print_date))
+    {
+        cout << "Whole day tasks" << endl;
+    }
+    for (; (i != NULL) && (i->value->getDate() == print_date); i = i->next)
+    {
+        i->value->print();
+        cout << endl;
+    }
+}
+
+void list::fread()
+{
+
+}
+
+void list::fwrite()
+{
+    
 }

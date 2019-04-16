@@ -73,7 +73,10 @@ unsigned date::getYear()
 
 void date::input()
 {
-    cin >> day >> month >> year;
+    do
+    {
+        cin >> day >> month >> year;
+    } while ((year < 1970) || (day > 31) || (month > 12));
 }
 
 void date::setDay(unsigned _day)
