@@ -19,6 +19,11 @@ list_item::list_item(task* temp)
     next = NULL;
 }
 
+list_item::~list_item()
+{
+    delete[] value;
+}
+
 list::list()
 {
     head = NULL;
@@ -29,6 +34,16 @@ list::list(const list& temp)
 
 }
 
+list::~list()
+{
+    list_item *con, *del;
+    for (list_item* i = head; i; i = con)
+    {
+        con = i->next;
+        del = i;
+        delete[] del;
+    }
+}
 void list::create()
 {
     date temp_date;
@@ -141,7 +156,7 @@ void list::print()
     }
     if (i == NULL)
     {
-        cout << "Tasks for this day unfounded";
+        cout << "Tasks for this day unfounded" << endl;
         return;
     }
 

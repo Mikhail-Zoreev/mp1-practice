@@ -11,6 +11,7 @@ public:
 
     list_item();
     list_item(task*);
+    ~list_item();
 };
 
 class list
@@ -20,11 +21,12 @@ public:
 
     list();
     list(const list&);
+    ~list();
 
     void create();
     void remove();
     void print();
     void fprint();
     void fread();
-    void fwrite();
+    void fwrite()
 };
