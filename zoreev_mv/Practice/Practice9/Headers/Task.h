@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include "Date.h"
 #include "Time.h"
 
@@ -9,12 +10,12 @@ class task
 {
 protected:
     date task_date;
-    char* description;
+    string description;
 
 public:
     task();
     task(const task&);
-    virtual ~task();
+    ~task();
 
     date getDate();
     virtual time getTime() = 0;

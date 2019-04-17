@@ -5,6 +5,11 @@ task::task()
 
 }
 
+task::~task()
+{
+
+}
+
 task::task(const task& temp)
 {
     task_date = temp.task_date;

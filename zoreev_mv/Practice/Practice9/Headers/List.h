@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "Task.h"
 #include "Task_Day.h"
 #include "Task_Std.h"

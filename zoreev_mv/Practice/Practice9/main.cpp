@@ -2,7 +2,7 @@
 
 int main()
 {
-    list note;
+    calendar note;
     int control;
     cout << "Add , Remove, Print, Writre to file, Read from file, Exit" << endl;
     do {

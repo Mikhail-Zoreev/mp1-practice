@@ -31,7 +31,7 @@ calendar::calendar()
 
 calendar::calendar(const calendar& temp)
 {
-
+    
 }
 
 calendar::~calendar()
@@ -145,10 +145,10 @@ void calendar::print()
 
 void calendar::fread()
 {
-
+    
 }
 
 void calendar::fwrite()
 {
-    
+
 }

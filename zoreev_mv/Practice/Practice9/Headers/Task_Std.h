@@ -9,8 +9,8 @@ class task_std : public task
 
 public:
     task_std();
-    task_std(const date&, const time&);
     task_std(const task_std&);
+    ~task_std();
 
     time getTime();
     void input();
