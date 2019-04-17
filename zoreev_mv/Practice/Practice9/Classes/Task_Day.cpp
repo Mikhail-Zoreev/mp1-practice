@@ -38,3 +38,16 @@ void task_day::print()
 {
     cout << description;
 }
+
+void task_day::fwrite(ofstream& file)
+{
+    file << task_date.getDay() << ' ' << task_date.getMonth() << ' ' << task_date.getYear() << ' ' << description;
+}
+
+void task_day::fread(ifstream& file)
+{
+    unsigned _day, _month, _year;
+    file >> _day >> _month >> _year;
+    task_date = date(_day, _month, _year);
+    getline(file, description, '\n');
+}

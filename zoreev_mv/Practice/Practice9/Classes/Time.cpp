@@ -60,6 +60,11 @@ unsigned time::getMinutes()
     return (minutes % 60);
 }
 
+unsigned time::getTime()
+{
+    return minutes;
+}
+
 void time::input()
 {
     unsigned _hours, _minutes;

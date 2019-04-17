@@ -43,3 +43,19 @@ void task_std::print()
 {
     cout << beginning_time.getHours() << ":" << beginning_time.getMinutes() << " -- " << end_time.getHours() << ":" << end_time.getMinutes() << "   " << description;
 }
+
+void task_std::fwrite(ofstream& file)
+{
+    file << task_date.getDay() << ' ' << task_date.getMonth() << ' ' << task_date.getYear() << ' ' << beginning_time.getTime() << ' ' << end_time.getTime() << ' ' << description;
+}
+
+void task_std::fread(ifstream& file)
+{
+    unsigned _day, _month, _year, _begin, _end;
+    char temp;
+    file >> _day >> _month >> _year >> _begin >> _end;
+    task_date = date(_day, _month, _year);
+    beginning_time = time(_begin);
+    end_time = time(_end);
+    getline(file, description, '\n');
+}

@@ -14,4 +14,6 @@ public:
     void input();
     bool isStd();
     void print();
+    void fwrite(ofstream& file);
+    void fread(ifstream& file);
 };

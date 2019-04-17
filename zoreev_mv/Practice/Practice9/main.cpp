@@ -4,11 +4,11 @@ int main()
 {
     calendar note;
     int control;
-    cout << "Add , Remove, Print, Writre to file, Read from file, Exit" << endl;
+    cout << "Add , Remove, Print, Writre calendar to file, Read calendar from file, Exit" << endl;
     do {
         do {
             cin >> control;
-        } while (control > 6);
+        } while (control > 7);
 
         switch (control)
         {
@@ -22,11 +22,11 @@ int main()
             note.print();
             break;
         case 4:
-            note.fread();
-            break;
-        case 5:
             note.fwrite();
             break;
+        case 5:
+            note.fread();
+            break;
         }
-    } while (control != 5);
+    } while (control != 6);
 }

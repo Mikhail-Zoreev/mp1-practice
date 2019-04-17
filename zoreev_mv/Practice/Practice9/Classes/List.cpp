@@ -19,9 +19,15 @@ list_item::list_item(task* temp)
     next = NULL;
 }
 
+list_item::list_item(list_item& temp)
+{
+    value = temp.value;
+    next = NULL;
+}
+
 list_item::~list_item()
 {
-    delete[] value;
+    delete value;
 }
 
 calendar::calendar()
@@ -31,7 +37,7 @@ calendar::calendar()
 
 calendar::calendar(const calendar& temp)
 {
-    
+    head = NULL;
 }
 
 calendar::~calendar()
@@ -41,7 +47,7 @@ calendar::~calendar()
     {
         con = i->next;
         del = i;
-        delete[] del;
+        delete del;
     }
 }
 void calendar::create()
@@ -102,8 +108,78 @@ void calendar::create()
     return;
 }
 
+void calendar::clear()
+{
+    list_item *i,*con, *del;
+    i = head;
+    head = NULL;
+    for (i; i; i = con)
+    {
+        con = i->next;
+        del = i;
+        delete del;
+    }
+}
+
 void calendar::remove()
 {
+    date temp_date;
+    time temp_time;
+    int control;
+    list_item *i = head, *del;
+    cout << "You whant to remove full day task? 1 for yes, 0 for no ";
+    do
+    {
+        cin >> control;
+    } while ((control != 1) && (control != 0));
+    if (!control)  
+    {
+        cout << "Input event date ";
+        temp_date.input();
+        cout << "Input event time ";
+        temp_time.input();
+        if ((head->value->getDate() == temp_date) && (head->value->getTime() == temp_time))
+        {
+            del = head;
+            head = head->next;
+            delete del;
+            return;
+        }
+        for (i = head; (i->next != NULL) && !((i->next->value->getDate() == temp_date) && (i->next->value->getTime() == temp_time)); i = i->next)
+        {
+        }
+        if (i == NULL)
+        {
+            cout << "Элемент не найден";
+            return;
+        }
+        del = i->next;
+        i->next = del->next;
+        delete del;
+    }
+    else
+    {
+        cout << "Input event date ";
+        temp_date.input();
+        if ((head->value->getDate() == temp_date) && (head->value->getTime() == 1440))
+        {
+            del = head;
+            head = head->next;
+            delete del;
+            return;
+        }
+        for (i = head; (i->next != NULL) && !((i->next->value->getDate() == temp_date) && (i->next->value->getTime() == 1440)); i = i->next);
+        {
+        }
+        if (i == NULL)
+        {
+            cout << "Элемент не найден";
+            return;
+        }
+        del = i->next;
+        i->next = del->next;
+        delete del;
+    }
     
 }
 
@@ -145,10 +221,66 @@ void calendar::print()
 
 void calendar::fread()
 {
-    
+    ifstream file;
+    int type;
+    file.open("calendar.cal");
+    if (!file.is_open())
+    {
+        cout << "Open error" << endl;
+    }
+    clear();
+    //Чтение с записью в head
+    if (!file.eof())
+    {
+        file >> type;
+        if (type)
+        {
+            head = new list_item;
+            head->value = new task_std;
+            head->value->fread(file);
+        }
+        else
+        {
+            head = new list_item;
+            head->value = new task_day;
+            head->value->fread(file);
+        }
+    }
+
+    //Чтение остальных
+    for (list_item* i = head; !file.eof(); i = i->next)
+    {
+        file >> type;
+        if (type)
+        {
+            i->next = new list_item;
+            i->next->value = new task_std;
+            i->next->value->fread(file);
+        }
+        else
+        {
+            i->next = new list_item;
+            i->next->value = new task_day;
+            i->next->value->fread(file);
+        }
+    }
+    file.close();
 }
 
 void calendar::fwrite()
 {
-
+    ofstream file;
+    file.open("calendar.cal");
+    if (!file.is_open())
+    {
+        cout << "Open error" << endl;
+        return;
+    }
+    for (list_item* i = head; i; i = i->next)
+    {
+        file << i->value->isStd() << ' ';
+        i->value->fwrite(file);
+        file << endl;
+    }
+    file.close();
 }

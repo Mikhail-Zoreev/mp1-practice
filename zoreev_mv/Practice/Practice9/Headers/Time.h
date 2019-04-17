@@ -21,6 +21,7 @@ public:
 
     unsigned getHours();
     unsigned getMinutes();
+    unsigned getTime();
 
     void input();
     void setTime(unsigned, unsigned);

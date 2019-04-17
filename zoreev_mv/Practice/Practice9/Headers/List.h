@@ -14,6 +14,7 @@ public:
 
     list_item();
     list_item(task*);
+    list_item(list_item& temp);
     ~list_item();
 };
 
@@ -27,9 +28,9 @@ public:
     ~calendar();
 
     void create();
+    void clear();
     void remove();
     void print();
-    void fprint();
     void fread();
     void fwrite();
 };

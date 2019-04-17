@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Date.h"
 #include "Time.h"
@@ -22,4 +23,6 @@ public:
     virtual void input() = 0;
     virtual bool isStd() = 0;
     virtual void print() = 0;
+    virtual void fwrite(ofstream& file) = 0;
+    virtual void fread(ifstream& file) = 0;
 };
