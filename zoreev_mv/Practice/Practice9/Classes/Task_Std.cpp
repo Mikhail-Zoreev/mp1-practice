@@ -27,6 +27,10 @@ time task_std::getTime()
 
 void task_std::input()
 {
+    cout << "Input task date ";
+    task_date.input();
+    cout << "Input beggining time ";
+    beginning_time.input();
     cout << "Input end time ";
     end_time.input();
     cout << "Input task description" << endl;

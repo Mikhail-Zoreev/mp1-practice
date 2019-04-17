@@ -24,6 +24,8 @@ time task_day::getTime()
 
 void task_day::input()
 {
+    cout << "Input task date ";
+    task_date.input();
     cout << "Input task description" << endl;
     //cin.getline(description, 60);
 }

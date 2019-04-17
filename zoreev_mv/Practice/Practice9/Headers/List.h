@@ -14,19 +14,19 @@ public:
     ~list_item();
 };
 
-class list
+class calendar
 {
 public:
     list_item* head;
 
-    list();
-    list(const list&);
-    ~list();
+    calendar();
+    calendar(const calendar&);
+    ~calendar();
 
     void create();
     void remove();
     void print();
     void fprint();
     void fread();
-    void fwrite()
+    void fwrite();
 };
