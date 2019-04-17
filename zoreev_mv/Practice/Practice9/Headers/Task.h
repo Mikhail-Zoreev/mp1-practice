@@ -15,7 +15,7 @@ protected:
 public:
     task();
     task(const task&);
-    ~task();
+    virtual ~task();
 
     date getDate();
     virtual time getTime() = 0;

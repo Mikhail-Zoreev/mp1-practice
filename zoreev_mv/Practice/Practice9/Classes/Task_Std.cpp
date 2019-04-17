@@ -41,5 +41,5 @@ bool task_std::isStd()
 
 void task_std::print()
 {
-    cout << beginning_time.getHours() << ":" << beginning_time.getMinutes() << " -- " << end_time.getHours() << ":" << end_time.getMinutes() << description;
+    cout << beginning_time.getHours() << ":" << beginning_time.getMinutes() << " -- " << end_time.getHours() << ":" << end_time.getMinutes() << "   " << description;
 }
