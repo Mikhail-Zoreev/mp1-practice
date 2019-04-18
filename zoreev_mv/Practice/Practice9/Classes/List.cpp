@@ -223,10 +223,15 @@ void calendar::fread()
 {
     ifstream file;
     int type;
-    file.open("calendar.cal");
+    string path;
+    cout << "Enter path to .cal file ";
+    getchar();
+    getline(cin, path);
+    file.open(path);
     if (!file.is_open())
     {
         cout << "Open error" << endl;
+        return;
     }
     clear();
     //Чтение с записью в head
@@ -270,7 +275,11 @@ void calendar::fread()
 void calendar::fwrite()
 {
     ofstream file;
-    file.open("calendar.cal");
+    string path;
+    getchar();
+    cout << "Enter path to .cal file ";
+    getline(cin, path);
+    file.open(path);
     if (!file.is_open())
     {
         cout << "Open error" << endl;
