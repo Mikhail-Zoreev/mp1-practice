@@ -16,33 +16,33 @@ int main()
         {
         case 1:
             note.create();
-            cout << "Press any cay to continue" << endl;
+            cout << "Press any key to continue" << endl;
             _getch();
             system("cls");
             break;
         case 2:
             note.remove();
             getchar();
-            cout << "Press any cay to continue" << endl;
+            cout << "Press any key to continue" << endl;
             _getch();
             system("cls");
             break;
         case 3:
             note.print();
             getchar();
-            cout << "Press any cay to continue" << endl;
+            cout << "Press any key to continue" << endl;
             _getch();
             system("cls");
             break;
         case 4:
             note.fwrite();
-            cout << "Press any cay to continue" << endl;
+            cout << "Press any key to continue" << endl;
             _getch();
             system("cls");
             break;
         case 5:
             note.fread();
-            cout << "Press any cay to continue" << endl;
+            cout << "Press any key to continue" << endl;
             _getch();
             system("cls");
             break;

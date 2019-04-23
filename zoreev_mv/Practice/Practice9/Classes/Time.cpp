@@ -67,10 +67,13 @@ unsigned time::getTime()
 
 void time::input()
 {
+	bool attemt = false;
     unsigned _hours, _minutes;
     do
     {
+		if (attemt) cout << "Wrong time, try again" << endl;
         cin >> _hours >> _minutes;
+		attemt++;
     } while ((_hours > 23) || (_minutes > 59));
     minutes = _hours * 60 + _minutes;
 }

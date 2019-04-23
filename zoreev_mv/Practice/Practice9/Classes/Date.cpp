@@ -73,10 +73,24 @@ unsigned date::getYear()
 
 void date::input()
 {
-    do
-    {
-        cin >> day >> month >> year;
-    } while ((year < 1970) || (day > 31) || (month > 12));
+	bool attemt = false;
+	do
+	{
+		if (attemt) cout << "Wrong date, try again" << endl;
+		cin >> day >> month >> year;
+		attemt = true;
+	} while (
+		(year > 2099) ||(year < 1970) || (month > 12) || (month < 1) || (day < 1)
+		||
+		((day > 31) && ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)))
+		||
+		((day > 30) && ((month == 2) || (month == 4) || (month == 6) || (month == 9) || (month == 11)))
+		||
+		((year % 4 == 0) && ((month == 2) && (day > 29)))
+		||
+		((year % 4 != 0) && ((month == 2) && (day > 28)))
+		);
+		
 }
 
 void date::setDay(unsigned _day)
