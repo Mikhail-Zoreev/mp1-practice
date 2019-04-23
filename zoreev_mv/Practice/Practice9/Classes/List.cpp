@@ -150,7 +150,7 @@ void calendar::remove()
         }
         if (i == NULL)
         {
-            cout << "Ёлемент не найден";
+            cout << "Task unfounded";
             return;
         }
         del = i->next;
@@ -173,7 +173,7 @@ void calendar::remove()
         }
         if (i == NULL)
         {
-            cout << "Ёлемент не найден";
+            cout << "Task unfounded";
             return;
         }
         del = i->next;
