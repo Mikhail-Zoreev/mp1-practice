@@ -25,6 +25,10 @@ public:
 	void Remove(unsigned index);
 	//Вывод содержимого на экран
 	void Print();
+	//Проверка на полноту
+	bool IsFull();
+	//Провепка на пустоту
+	bool IsEmpty();
 
 	Container<Type, max_size>& operator=(const Container<Type, max_size>& temp);
 	Type& operator[](unsigned index);
@@ -57,7 +61,7 @@ Container<Type, max_size>::~Container()
 template<typename Type, unsigned max_size>
 void Container<Type, max_size>::Add(const Type& temp)
 {
-	if (size + 1 < max_size)
+	if (size + 1 <= max_size)
 	{
 		Type* temp_arr = new Type[size + 1];
 		for (int i = 0; i < size; i++)
@@ -77,7 +81,7 @@ void Container<Type, max_size>::Add(const Type& temp)
 template<typename Type, unsigned max_size>
 void Container<Type, max_size>::Add(const Type* temp)
 {
-	if (size + 1 < max_size)
+	if (size + 1 <= max_size)
 	{
 		Type* temp_arr = new Type[size + 1];
 		for (int i = 0; i < size; i++)
@@ -195,4 +199,18 @@ void Container<Type, max_size>::Print()
 	{
 		std::cout << arr[i] << std::endl;
 	}
+}
+
+template<typename Type, unsigned max_size>
+bool Container<Type, max_size>::IsFull()
+{
+	if (size == max_size) return true;
+	return false;
+}
+
+template<typename Type, unsigned max_size>
+bool Container<Type, max_size>::IsEmpty()
+{
+	if (size == 0) return true;
+	return false;
 }
