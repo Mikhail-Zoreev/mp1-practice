@@ -5,7 +5,7 @@
 
 int main()
 {
-	Container<int, 3> cont;
+	Container<int*, 3> cont;
 	unsigned control, index;
 	int input;
 	do {
@@ -14,27 +14,27 @@ int main()
 		try {
 			switch (control)
 			{
-			case 0:
+			case 1:
 				std::cout << "Input value ";
 				std::cin >> input;
 				cont.Add(input);
 				break;
-			case 1:
+			case 2:
 				std::cout << "Input value ";
 				std::cin >> input;
 				cont.FindAndRemove(input);
 				break;
-			case 2:
+			case 3:
 				std::cout << "Input index ";
 				std::cin >> index;
 				cont.Remove(index);
 				break;
-			case 3:
+			case 4:
 				std::cout << "Input value ";
 				std::cin >> input;
 				std::cout << cont.Find(input) << std::endl;
 				break;
-			case 4:
+			case 5:
 				cont.Print();
 				std::cout << std::endl;
 				break;
@@ -58,5 +58,5 @@ int main()
 				break;
 			}
 		}
-	} while (control != 5);
+	} while (control != 6);
 }
