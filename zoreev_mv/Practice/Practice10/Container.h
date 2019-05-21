@@ -230,6 +230,7 @@ class Container<Type*>
 {
 	Type** arr;
 	unsigned size;
+	unsigned max_size;
 
 public:
 	Container();
@@ -253,12 +254,12 @@ public:
 	//Провепка на пустоту
 	bool IsEmpty();
 
-	Container<Type>& operator=(const Container<Type>& temp);
+	Container<Type*>& operator=(const Container<Type>& temp);
 	Type& operator[](unsigned index);
 };
 
 template<typename Type>
-Container<Type>::Container()
+Container<Type*>::Container()
 {
 	size = 0;
 	max_size = 0;
@@ -266,7 +267,7 @@ Container<Type>::Container()
 }
 
 template<typename Type>
-Container<Type>::Container(const Container<Type>& temp)
+Container<Type*>::Container(const Container<Type>& temp)
 {
 	size = temp.size;
 	max_size = temp.max_size;
@@ -279,7 +280,7 @@ Container<Type>::Container(const Container<Type>& temp)
 }
 
 template<typename Type>
-Container<Type>::~Container()
+Container<Type*>::~Container()
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -291,11 +292,11 @@ Container<Type>::~Container()
 }
 
 template<typename Type>
-void Container<Type>::Add(const Type& temp)
+void Container<Type*>::Add(const Type& temp)
 {
 	if (size == max_size)
 	{
-		Type* temp_arr = new Type[max_size + STEP];
+		Type** temp_arr = new Type*[max_size + STEP];
 		for (unsigned i = 0; i < size; i++)
 		{
 			temp_arr[i] = new Type;
@@ -313,11 +314,11 @@ void Container<Type>::Add(const Type& temp)
 }
 
 template<typename Type>
-void Container<Type>::Add(const Type* temp)
+void Container<Type*>::Add(const Type* temp)
 {
 	if (size == max_size)
 	{
-		Type* temp_arr = new Type[max_size + STEP];
+		Type** temp_arr = new Type*[max_size + STEP];
 		for (unsigned i = 0; i < size; i++)
 		{
 			temp_arr[i] = new Type;
@@ -335,7 +336,7 @@ void Container<Type>::Add(const Type* temp)
 }
 
 template<typename Type>
-unsigned Container<Type>::Find(const Type& temp)
+unsigned Container<Type*>::Find(const Type& temp)
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -345,7 +346,7 @@ unsigned Container<Type>::Find(const Type& temp)
 }
 
 template<typename Type>
-void Container<Type>::FindAndRemove(const Type& temp)
+void Container<Type*>::FindAndRemove(const Type& temp)
 {
 	if (size == 0) return;
 	unsigned del;
@@ -360,7 +361,7 @@ void Container<Type>::FindAndRemove(const Type& temp)
 }
 
 template<typename Type>
-void Container<Type>::Remove(unsigned index)
+void Container<Type*>::Remove(unsigned index)
 {
 	if ((index < 0) || (index >= size))
 	{
@@ -376,7 +377,7 @@ void Container<Type>::Remove(unsigned index)
 }
 
 template<typename Type>
-Container<Type>& Container<Type>::operator=(const Container<Type>& temp)
+Container<Type*>& Container<Type*>::operator=(const Container<Type>& temp)
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -391,7 +392,7 @@ Container<Type>& Container<Type>::operator=(const Container<Type>& temp)
 }
 
 template<typename Type>
-Type& Container<Type>::operator[](unsigned index)
+Type& Container<Type*>::operator[](unsigned index)
 {
 	if ((index < 0) || (index >= size))
 	{
@@ -401,7 +402,7 @@ Type& Container<Type>::operator[](unsigned index)
 }
 
 template<typename Type>
-void Container<Type>::Print()
+void Container<Type*>::Print()
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -410,14 +411,14 @@ void Container<Type>::Print()
 }
 
 template<typename Type>
-bool Container<Type>::IsFull()
+bool Container<Type*>::IsFull()
 {
 	if (size == max_size) return true;
 	return false;
 }
 
 template<typename Type>
-bool Container<Type>::IsEmpty()
+bool Container<Type*>::IsEmpty()
 {
 	if (size == 0) return true;
 	return false;

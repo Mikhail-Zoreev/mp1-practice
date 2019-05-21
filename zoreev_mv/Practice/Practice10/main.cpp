@@ -5,7 +5,7 @@
 
 int main()
 {
-	Container<int*, 3> cont;
+	Container<int*> cont;
 	unsigned control, index;
 	int input;
 	do {
