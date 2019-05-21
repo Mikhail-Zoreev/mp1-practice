@@ -1,12 +1,15 @@
 ﻿#pragma once
 #include "Exeption.h"
 #include <iostream>
+#define STEP 10
 
-template<typename Type, unsigned max_size>
+
+template<typename Type>
 class Container
 {
 	Type* arr;
 	unsigned size;
+	unsigned max_size;
 
 public:
 	Container();
@@ -30,76 +33,81 @@ public:
 	//Провепка на пустоту
 	bool IsEmpty();
 
-	Container<Type, max_size>& operator=(const Container<Type, max_size>& temp);
+	Container<Type>& operator=(const Container<Type>& temp);
 	Type& operator[](unsigned index);
 };
 
-template<typename Type, unsigned max_size>
-Container<Type, max_size>::Container()
+template<typename Type>
+Container<Type>::Container()
 {
 	size = 0;
+	max_size = 0;
 	arr = nullptr;
 }
 
-template<typename Type, unsigned max_size>
-Container<Type, max_size>::Container(const Container& temp)
+template<typename Type>
+Container<Type>::Container(const Container& temp)
 {
 	size = temp.size;
+	max_size = temp.max_size;
+	arr = new Type[max_size];
 	for (unsigned i = 0; i < size; i++)
 	{
 		arr[i] = temp.arr[i];
 	}
 }
 
-template<typename Type, unsigned max_size>
-Container<Type, max_size>::~Container()
+template<typename Type>
+Container<Type>::~Container()
 {
 	size = 0;
+	max_size;
 	delete[] arr;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type, max_size>::Add(const Type& temp)
+template<typename Type>
+void Container<Type>::Add(const Type& temp)
 {
-	if (size + 1 <= max_size)
+	if (size == max_size)
 	{
-		Type* temp_arr = new Type[size + 1];
-		for (int i = 0; i < size; i++)
+		Type* temp_arr = new Type[max_size + STEP];
+		for (unsigned i = 0; i < size; i++)
 		{
 			temp_arr[i] = arr[i];
 		}
+		max_size += STEP;
 		if (arr != nullptr) delete[] arr;
 		arr = temp_arr;
-		size++;
-		arr[size - 1] = temp;
-		return;
 	}
+	size++;
+	arr[size - 1] = temp;
+	return;
 	throw Exeption(ContainerIsFull);
 	return;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type, max_size>::Add(const Type* temp)
+template<typename Type>
+void Container<Type>::Add(const Type* temp)
 {
-	if (size + 1 <= max_size)
+	if (size == max_size)
 	{
-		Type* temp_arr = new Type[size + 1];
-		for (int i = 0; i < size; i++)
+		Type* temp_arr = new Type[max_size + STEP];
+		for (unsigned i = 0; i < size; i++)
 		{
 			temp_arr[i] = arr[i];
 		}
+		max_size += STEP;
 		if (arr != nullptr) delete[] arr;
 		arr = temp_arr;
-		size++;
-		arr[size - 1] = *temp;
-		return;
 	}
-	throw Exeption(ContainerIsFull);
+	size++;
+	arr[size - 1] = *temp;
+	return;
 	return;
 }
 
-template<typename Type, unsigned max_size>
-unsigned Container<Type, max_size>::Find(const Type& temp)
+template<typename Type>
+unsigned Container<Type>::Find(const Type& temp)
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -108,8 +116,8 @@ unsigned Container<Type, max_size>::Find(const Type& temp)
 	return -1;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type, max_size>::FindAndRemove(const Type& temp)
+template<typename Type>
+void Container<Type>::FindAndRemove(const Type& temp)
 {
 	if (size == 0) return;
 	unsigned del;
@@ -135,8 +143,8 @@ void Container<Type, max_size>::FindAndRemove(const Type& temp)
 	arr = temp_arr;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type, max_size>::Remove(unsigned index)
+template<typename Type>
+void Container<Type>::Remove(unsigned index)
 {
 	if (size == 0) return;
 	if ((index < 0) || (index >= size))
@@ -163,8 +171,8 @@ void Container<Type, max_size>::Remove(unsigned index)
 	arr = temp_arr;
 }
 
-template<typename Type, unsigned max_size>
-Container<Type, max_size>& Container<Type, max_size>::operator=(const Container<Type, max_size>& temp)
+template<typename Type>
+Container<Type>& Container<Type>::operator=(const Container<Type>& temp)
 {
 	if (&temp == this) return *this;
 	if (temp.size > max_size)
@@ -182,8 +190,8 @@ Container<Type, max_size>& Container<Type, max_size>::operator=(const Container<
 	return *this;
 }
 
-template<typename Type, unsigned max_size>
-Type& Container<Type, max_size>::operator[](unsigned index)
+template<typename Type>
+Type& Container<Type>::operator[](unsigned index)
 {
 	if ((index < 0) || (index >= size))
 	{
@@ -192,8 +200,8 @@ Type& Container<Type, max_size>::operator[](unsigned index)
 	return arr[index];
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type, max_size>::Print()
+template<typename Type>
+void Container<Type>::Print()
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -201,15 +209,15 @@ void Container<Type, max_size>::Print()
 	}
 }
 
-template<typename Type, unsigned max_size>
-bool Container<Type, max_size>::IsFull()
+template<typename Type>
+bool Container<Type>::IsFull()
 {
 	if (size == max_size) return true;
 	return false;
 }
 
-template<typename Type, unsigned max_size>
-bool Container<Type, max_size>::IsEmpty()
+template<typename Type>
+bool Container<Type>::IsEmpty()
 {
 	if (size == 0) return true;
 	return false;
@@ -217,15 +225,15 @@ bool Container<Type, max_size>::IsEmpty()
 
 //Супер специализация для Type*
 
-template<typename Type, unsigned max_size>
-class Container<Type*, max_size>
+template<typename Type>
+class Container<Type*>
 {
 	Type** arr;
 	unsigned size;
 
 public:
 	Container();
-	Container(const Container<Type*, max_size>& temp);
+	Container(const Container<Type>& temp);
 	~Container();
 
 	//Добавление элемента
@@ -245,70 +253,89 @@ public:
 	//Провепка на пустоту
 	bool IsEmpty();
 
-	Container<Type*, max_size>& operator=(const Container<Type*, max_size>& temp);
+	Container<Type>& operator=(const Container<Type>& temp);
 	Type& operator[](unsigned index);
 };
 
-template<typename Type, unsigned max_size>
-Container<Type*, max_size>::Container()
+template<typename Type>
+Container<Type>::Container()
 {
 	size = 0;
-	arr = new Type*[max_size];
+	max_size = 0;
+	arr = nullptr;
 }
 
-template<typename Type, unsigned max_size>
-Container<Type*, max_size>::Container(const Container<Type*, max_size>& temp)
+template<typename Type>
+Container<Type>::Container(const Container<Type>& temp)
 {
 	size = temp.size;
-	arr = new Type * [max_size];
+	max_size = temp.max_size;
+	arr = new Type* [max_size];
 	for (unsigned i = 0; i < size; i++)
 	{
 		arr[i] = new Type;
-		arr[i][0] = temp.arr[i];
+		arr[i][0] = temp.arr[i][0];
 	}
 }
 
-template<typename Type, unsigned max_size>
-Container<Type*, max_size>::~Container()
+template<typename Type>
+Container<Type>::~Container()
 {
-	size = 0;
 	for (unsigned i = 0; i < size; i++)
 	{
 		delete arr[i];
 	}
+	max_size = 0;
+	size = 0;
 	delete[] arr;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type*, max_size>::Add(const Type& temp)
+template<typename Type>
+void Container<Type>::Add(const Type& temp)
 {
-	if (size + 1 <= max_size)
+	if (size == max_size)
 	{
-		arr[size] = new Type;
-		arr[size][0] = temp;
-		size++;
-		return;
+		Type* temp_arr = new Type[max_size + STEP];
+		for (unsigned i = 0; i < size; i++)
+		{
+			temp_arr[i] = new Type;
+			temp_arr[i][0] = arr[i][0];
+		}
+		max_size += STEP;
+		if (arr != nullptr) delete[] arr;
+		arr = temp_arr;
 	}
-	throw Exeption(ContainerIsFull);
+	arr[size] = new Type;
+	arr[size][0] = temp;
+	size++;
+	return;
 	return;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type*, max_size>::Add(const Type* temp)
+template<typename Type>
+void Container<Type>::Add(const Type* temp)
 {
-	if (size + 1 <= max_size)
+	if (size == max_size)
 	{
+		Type* temp_arr = new Type[max_size + STEP];
+		for (unsigned i = 0; i < size; i++)
+		{
+			temp_arr[i] = new Type;
+			temp_arr[i][0] = arr[i][0];
+		}
+		max_size += STEP;
+		if (arr != nullptr) delete[] arr;
+		arr = temp_arr;
+	}
 		arr[size] = new Type;
 		arr[size][0] = *temp;
 		size++;
 		return;
-	}
-	throw Exeption(ContainerIsFull);
 	return;
 }
 
-template<typename Type, unsigned max_size>
-unsigned Container<Type*, max_size>::Find(const Type& temp)
+template<typename Type>
+unsigned Container<Type>::Find(const Type& temp)
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -317,8 +344,8 @@ unsigned Container<Type*, max_size>::Find(const Type& temp)
 	return -1;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type*, max_size>::FindAndRemove(const Type& temp)
+template<typename Type>
+void Container<Type>::FindAndRemove(const Type& temp)
 {
 	if (size == 0) return;
 	unsigned del;
@@ -332,8 +359,8 @@ void Container<Type*, max_size>::FindAndRemove(const Type& temp)
 	size--;
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type*, max_size>::Remove(unsigned index)
+template<typename Type>
+void Container<Type>::Remove(unsigned index)
 {
 	if ((index < 0) || (index >= size))
 	{
@@ -348,8 +375,8 @@ void Container<Type*, max_size>::Remove(unsigned index)
 	size--;
 }
 
-template<typename Type, unsigned max_size>
-Container<Type*, max_size>& Container<Type*, max_size>::operator=(const Container<Type*, max_size>& temp)
+template<typename Type>
+Container<Type>& Container<Type>::operator=(const Container<Type>& temp)
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -363,8 +390,8 @@ Container<Type*, max_size>& Container<Type*, max_size>::operator=(const Containe
 	}
 }
 
-template<typename Type, unsigned max_size>
-Type& Container<Type*, max_size>::operator[](unsigned index)
+template<typename Type>
+Type& Container<Type>::operator[](unsigned index)
 {
 	if ((index < 0) || (index >= size))
 	{
@@ -373,8 +400,8 @@ Type& Container<Type*, max_size>::operator[](unsigned index)
 	return arr[index][0];
 }
 
-template<typename Type, unsigned max_size>
-void Container<Type*, max_size>::Print()
+template<typename Type>
+void Container<Type>::Print()
 {
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -382,15 +409,15 @@ void Container<Type*, max_size>::Print()
 	}
 }
 
-template<typename Type, unsigned max_size>
-bool Container<Type*, max_size>::IsFull()
+template<typename Type>
+bool Container<Type>::IsFull()
 {
 	if (size == max_size) return true;
 	return false;
 }
 
-template<typename Type, unsigned max_size>
-bool Container<Type*, max_size>::IsEmpty()
+template<typename Type>
+bool Container<Type>::IsEmpty()
 {
 	if (size == 0) return true;
 	return false;
