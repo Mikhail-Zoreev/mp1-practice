@@ -6,7 +6,7 @@
 
 int number = 0;
 int discont[N], price[N];
-int added_code[N] = { 0 }, count[N] = { 0 };
+char added_code[N][4] = { 0 }, count[N] = { 0 };
 int tcode[4];
 double sum = 0, final_discont = 0;
 
@@ -19,15 +19,6 @@ void data_generation() {
     for (i = 1; i < N; i++) {
         price[i] = rand() % 1000;
         discont[i] = rand() % 50 + 1;
-    }
-}
-
-void code_translation(int code) {
-    int i, temp = code;
-
-    for (i = 3; i >= 0; i--) {
-        tcode[i] = temp % 10;
-        temp /= 10;
     }
 }
 
@@ -86,27 +77,30 @@ void name_printer(kind,country,color,type) {
 
 //Оперативные функции
 
-void information(int code) {
+void information(char* code) {
     printf("***\n Информация о товаре :\n");
-    name_printer(tcode[0], tcode[1], tcode[2], tcode[3]);
-    printf("\n\nКод:    %d%d%d%d\n", tcode[0], tcode[1], tcode[2], tcode[3]);
-    printf("Цена:   %d\nСкидка: %d\n***\n\n", price[code], discont[code]);
+    name_printer(code[0], code[1], code[2], code[3]);
+    printf("\n\nКод:    %d%d%d%d\n", code[0], code[1], code[2], code[3]);
+    printf("Цена:   %d\nСкидка: %d\n***\n\n", price[atoi(code)], discont[atoi(code)]);
 }
 
-void adding(int code) {
+void adding(char* code) {
     int i=0;
 
-    added_code[number] = code;
+    added_code[number][0] = code[0];
+	added_code[number][1] = code[1];
+	added_code[number][2] = code[2];
+	added_code[number][3] = code[3];
 
-    while (added_code[i] != code) {
+    while (added_code[i][0] != code[0] && added_code[i][1] != code[1] && added_code[i][2] != code[2] && added_code[i][3] != code[3]) {
         i++;
     }
     
     count[i]++;
     if ((i == number) || (number < 1)) number++;
 
-    sum = (sum + price[code]);
-    final_discont = (final_discont + (((double) discont[code]) / 100) * price[code]);
+    sum = (sum + price[atoi(code)]);
+    final_discont = (final_discont + (((double) discont[atoi(code)]) / 100) * price[atoi(code)]);
 }
 
 void printing() {
@@ -120,7 +114,7 @@ void printing() {
         code_translation(added_code[i]);
         name_printer(tcode[0], tcode[1], tcode[2], tcode[3]);
         printf("  %d%d%d%d  ", tcode[0], tcode[1], tcode[2], tcode[3]);
-        printf("%4d  %10d  %5d\n\n", price[added_code[i]], count[i], price[added_code[i]]* count[i]);
+        printf("%4d  %10d  %5d\n\n", price[atoi(added_code[i])], count[i], price[ator(added_code[i])]* count[i]);
     }
 
     printf("\nИтог     %lf\n", sum);
@@ -129,49 +123,37 @@ void printing() {
 }
 
 void main() {
-    int code = 0, input = 0;
+    int input = 0;
     char str_code[4];
     setlocale(LC_ALL, "Russian");
     data_generation();
-
     printf("Сеанс запущен, сканируйте код\n");
-
     while (input != 4) {
-
         do {
-            scanf("%s", str_code); //Я не понял почему нельзя сканировать int
-            code = atoi(str_code);
-        } while ((code < 1) || (code > 9999));
-
+            scanf("%s", str_code); 
+        } while ((str_code[0] < 48 || str_code[1] < 48 || str_code[2] < 48 || str_code[3] < 48) || (str_code[0] < 57 || str_code[1] < 57 || str_code[2] < 57 || str_code[3] < 57));
         system("cls");
-
         input = 0;
-
         while (input != 3) {
-
             printf("Чтобы вывести описание товара нажмите 1\n");
             printf("Чтобы добавить товар в чек нажмите 2\n");
             printf("Чтобы сканировать следующий товар нажмите 3\n");
             printf("Чтобы напечатать чек нажмите 4\n");
-
             do {
                 scanf("%d", &input);
             } while ((input < 1) || (input>4));
-
             if (input == 1) {
                 system("cls");
-                code_translation(code);
-                information(code);
+                information(str_code);
             }
             if (input == 2)  {
-                adding(code);
+                adding(str_code);
                 system("cls");
             }
             if (input == 4) {
-                printing(code);
+                printing();
                 break;
             }
-
         }
 
     }
