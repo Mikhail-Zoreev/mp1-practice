@@ -20,99 +20,71 @@ struct vector
     double* array;
     int size;
 
-    vector() {
-        size = 0;
-        array = nullptr;
-    }
-    vector(int _size) {
-        size = _size;
-        array = new double [size];
-        for (int i = 0; i < size; i++)
-        {
-            array[i] = 0;
-        }
-    }
-    vector(double* _array, int _size)
-    {
-        size = _size;
-        array = new double[size];
-        for (int i = 0; i < size; i++)
-        {
-            array[i] = _array[i];
-        }
-    }
-    /*Привет я конструктор копирования, забавный факт обо мне:
-    может покзаться что я бесполезен, но это не так, я нужен
-    для передачи локальных переменных функции в другую функцию,
-    но об этом разумеется никто не рассказывал, зато вы теперь об
-    этом знаете :D Удачи!*/
-    vector(vector& temp) {
-        size = temp.size;
-        array = new double[size];
-        for (int i = 0; i < size; i++)
-        {
-            array[i] = temp.array[i];
-        }
-    }
-    ~vector() {
-        size = 0;
-        if (array != nullptr)
-        {
-            delete[] array;
-        }
-    }
+	vector();
+	vector(int _size);
+	vector(double* _array, int _size);
+	vector(vector& temp);
+	~vector();
 
     //Присваивание
-    vector& operator=(const vector& temp);
+    const vector& operator=(const vector& temp);
 
-    /* А что им тут вообще делать? 
     void* operator new(size_t _size);
+	void* operator new[](size_t _size);
 
     void operator delete(void* temp);
-    */
+	void operator delete[](void* temp);
 
     //Индексация
     double& operator[](int index);
+	double operator[](int index) const;
 
     //Складывание векторов и присваивание
-    vector operator+=( const vector& temp);
+    const vector& operator+=( const vector& temp);
 
     //Складывание вектора с числом и присваивание
-    vector operator+=( const double temp);
+    const vector& operator+=( const double temp);
 
     //Разность векторов и присваивание
-    vector operator-=(const vector& temp);
+    const vector& operator-=(const vector& temp);
 
     //Разность вектора с числом и присваивание
-    vector operator-=(const double temp);
+    const vector& operator-=(const double temp);
 
     //Умножение вектора на число и присваивание
-    vector operator*=(const double m);
+    const vector& operator*=(const double m);
 
     //Получение длинны вектора
-    double length();
+    double length() const;
 
-    //Печать вектора
-    void print();
+    //Ввод - Вывод вектора
+	void input();
 
-    //Ввод вектора
-    void input();
+	friend std::istream& operator>> (std::istream& in, vector& temp);
+
+	friend std::ostream& operator<< (std::ostream& out, const vector& temp);
+
+	//Складывание векторов
+	vector& operator+(const vector& temp) const;
+
+	//Складывание вектора с числом
+	vector& operator+(const double temp) const;
+
+	//Разность векторов
+	vector& operator-(const vector& temp) const;
+
+	//Разность вектора с числом
+	vector& operator-(const double temp) const;
+
+	//Скалярное произведение
+	double& operator*(const vector& temp) const;
+
+	//Умножение вектора на число
+	vector& operator*(const double temp) const;
+
+	//Сравнение векторов
+	bool operator>(const vector& temp) const;
+	bool operator<(const vector& temp) const;
+	bool operator==(const vector& temp) const;
+	bool operator!=(const vector& temp) const;
 };
-
-//Складывание векторов
-vector operator+(const vector& a, const vector& b);
-
-//Складывание вектора с числом
-vector operator+(const vector& a, const double b);
-
-//Разность векторов
-vector operator-(const vector& a, const vector& b);
-
-//Разность вектора с числом
-vector operator-(const vector& a, const double b);
-
-//Скалярное произведение
-double operator*(const vector& a, const vector& b);
-
-//Умножение вектора на число
-vector operator*(const vector& a, const double m);
