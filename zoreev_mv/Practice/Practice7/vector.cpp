@@ -162,9 +162,10 @@ std::ostream& operator<< (std::ostream& out, const vector& temp)
 			cout << temp.array[i] << " ";
 		}
 		cout << endl;
-		return;
+		return out;
 	}
 	cout << "Array is empty" << endl;
+	return out;
 }
 
 std::istream& operator>> (std::istream& in, vector& temp)
