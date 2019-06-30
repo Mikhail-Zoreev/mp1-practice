@@ -179,6 +179,7 @@ std::istream& operator>> (std::istream& in, vector& temp)
 	{
 		cin >> temp.array[i];
 	}
+	return in;
 }
 
 void vector::input()
